@@ -1,0 +1,397 @@
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+class Product_list extends CI_Controller 
+{	
+	 
+	public function __construct()
+    {
+          parent::__construct();
+           $this->load->database();
+           $this->load->model('common_my_model');
+           $this->load->library('pagination');
+
+	}
+	
+	public function index()
+	{
+
+	//	$user_id=$this->session->userdata('user_session_id');
+
+		 //$category_id=$this->uri->segment(2);
+        $parent_category = $this->uri->segment(2);
+        $sub_category = $this->uri->segment(3);
+      //  $category = $this->uri->segment(4);
+
+        // echo $sub_category;exit;
+
+            $data['seo_content_details']=  $this->common_my_model->common($table_name ='seo_module', $field = array(), $where = array('seo_module_id'=>'8'), $where_or = array(), $like = array(), $like_or = array(), $order = array(), $start = '', $end = '');
+
+            $data['category_list']=  $this->common_my_model->common($table_name ='category', $field = array(), $where = array('status'=>'1','parent_id'=>'o'), $where_or = array(), $like = array(), $like_or = array(), $order = array(), $start = '', $end = '');	
+            $data['sub_category_list']=array();
+
+
+           
+
+
+        if($parent_category !='' && $sub_category == ''){
+
+       
+          @$parent_category_data=  $this->common_my_model->common($table_name ='category', $field = array(), $where = array('unique_name'=>$parent_category), $where_or = array(), $like = array(), $like_or = array(), $order = array(), $start = '', $end = '');
+
+
+
+        
+
+          $data['sub_category_list']=  $this->common_my_model->common($table_name ='category', $field = array(), $where = array('parent_id'=>@$parent_category_data['0']->cat_id,'status'=>'1'), $where_or = array(), $like = array(), $like_or = array(), $order = array(), $start = '', $end = '');
+
+         // echo "<pre>"; print_r($parent_category_data); 
+
+      // echo $parent_category_data[0]->cat_id;exit;
+
+
+        }
+
+         
+
+         
+
+         if($parent_category !='' && $sub_category!=''){
+
+
+          $sub_category_data=$this->common_my_model->common($table_name = 'category', $field = array(), $where = array('unique_name'=>$sub_category), $where_or = array(), $like = array(), $like_or = array(), $order = array(), $start = '', $end = '');
+
+         // echo $sub_category_data[0]->cat_id;exit;
+
+        }
+
+
+
+      //  echo "<pre>"; print_r($parent_category_data); 
+
+      // echo $parent_category_data[0]->cat_id;
+
+       // echo $sub_category_data[0]->cat_id;exit;
+      
+
+
+        $data_model=array(
+
+                      'parent_category_id'=>@$parent_category_data['0']->cat_id,
+                      'sub_category_id'=>@$sub_category_data['0']->cat_id,
+                      
+                     
+                      
+                    );
+
+
+
+
+
+            $url=$this->uri->segment(2);
+          
+            $data['url']=$this->common_my_model->selectOne('category','unique_name',@$url);
+
+            if($this->uri->segment(2))
+            {
+                
+                    $url=$this->uri->segment(2);
+        $data['url']=$this->common_my_model->selectOne('category','unique_name',$url);
+                   $url_id= $data['url'][0]->cat_id;
+                   
+
+                $total_row=$this->common_my_model->product_list($data_model);
+             
+
+         //  echo count($total_row);exit; 
+  
+                
+            }
+            else
+            {
+              
+
+                 $total_row=$this->common_my_model->product_list($data_model);
+                //  echo count($total_row);exit;
+            }
+
+            
+         if($this->uri->segment(2))
+            {
+                if(count($data['url']))
+                {
+                    $url=$this->uri->segment(2);
+                    $config['base_url'] = base_url()."product-list"."/".$url."?";
+                }
+                else
+                {
+                    redirect(base_url()."product-list");
+                }
+            }
+            else
+            {
+                 $config['base_url'] = base_url()."product-list"."?";
+            }
+
+
+
+
+
+
+            $config['total_rows'] = count($total_row); 
+            $config['per_page'] = 10;
+            $config['first_link'] = 'FIRST';
+            $config['last_link'] = 'LAST';
+            $config['first_tag_open'] = '<li class="page-item">';
+            $config['first_tag_close'] = '</li>';
+            $config['last_tag_open'] = '<li class="page-item">';
+            $config['last_tag_close'] = '</li>';
+            $config['next_link'] = 'NEXT<i class="fa fa-angle-double-right"></i>';
+            $config['next_tag_open'] = '<li class="page-item">';
+            $config['next_tag_close'] = '</li>';
+            $config['prev_link'] = '<i class="fa fa-angle-double-left"></i>PREV';
+            $config['prev_tag_open'] = '<li class="page-item">';
+            $config['prev_tag_close'] = '</li>';
+            $config['full_tag_open'] = '<ul class="pagination pagination-center">';
+            $config['full_tag_close'] = '</ul>';
+            $config['cur_tag_open'] = '<li class="page-item active">';
+            $config['cur_tag_close'] = '</li>';
+            $config['num_tag_open'] = '<li class="page-item">';
+            $config['num_tag_close'] = '</li>';
+
+            $config["num_links"] =8;
+            $config['page_query_string'] = TRUE;
+
+            $this->pagination->initialize($config);
+            if(isset($_GET['per_page'])){
+                $page = $_GET['per_page'] ;
+
+
+            }
+            else{
+                $page = 0;
+            }
+           $str_links = $this->pagination->create_links();
+
+           $data['links'] = $str_links;
+
+         //  $data['blog_list']=$this->common_model->fetch_all_blog('tbl_blog',$config['per_page'],$page);
+
+
+
+
+  if($this->uri->segment(2))
+            {
+                 if(count($data['url']))
+                {
+                    $url=$this->uri->segment(2);
+                    $url_id= $data['url'][0]->cat_id;
+                  
+
+                    $data['product_list']=$this->common_my_model->product_list_page($data_model,$config['per_page'],$page);
+                }
+                else
+                {
+                    redirect(base_url()."product-list");
+                }
+            }
+            else
+            {
+               
+
+                $data['product_list']=$this->common_my_model->product_list_page($data_model,$config['per_page'],$page);
+            }
+
+          //  $data['category_list']=  $this->common_my_model->common($table_name ='category', $field = array(), $where = array('parent_id'=>$parent_category_data['0']->cat_id,'status'=>'1'), $where_or = array(), $like = array(), $like_or = array(), $order = array(), $start = '', $end = '');
+
+
+     // echo '<pre>'; 
+     // print_r($data['product_list']);exit;
+
+            $data['brand_list']=  $this->common_my_model->common($table_name ='brand', $field = array(), $where = array('status'=>'1'), $where_or = array(), $like = array(), $like_or = array(), $order = array(), $start = '', $end = ''); 
+		
+
+		
+				
+		$this->load->view('common/header',$data);
+		$this->load->view('product_list_view',$data);
+		$this->load->view('common/footer');
+	}
+
+
+
+
+  public function srearch_product()
+  {
+
+    $product_name=$this->input->get('product_name');
+    $category=$this->input->get('category_id');
+    $data['seo_content_details']=  $this->common_my_model->common($table_name ='seo_module', $field = array(), $where = array('seo_module_id'=>'8'), $where_or = array(), $like = array(), $like_or = array(), $order = array(), $start = '', $end = '');
+    $data['product_list']=  $this->common_my_model->product_list_by_searching($product_name,$category);
+
+  
+        
+    $this->load->view('common/header',$data);
+    $this->load->view('srearch_product_view',$data);
+    $this->load->view('common/footer');
+  }
+
+
+    public function product_filter()
+  {
+
+  //  $user_id=$this->session->userdata('user_session_id');
+
+     //$category_id=$this->uri->segment(2);
+        $parent_category = $this->input->post('parent_category');
+       
+        $sub_category = $this->input->post('sub_category');
+        $brand_ids = $this->input->post('brand_ids');
+        $max = $this->input->post('max');
+        $min = $this->input->post('min');
+        $orderbyprice = $this->input->post('orderbyprice');
+        $parent_category = $this->input->post('parent_category');
+        $parent_category = $this->input->post('parent_category');
+        $parent_category = $this->input->post('parent_category');
+        $parent_category = $this->input->post('parent_category');
+      //  $category = $this->uri->segment(4);
+
+        // echo $sub_category;exit;
+
+  
+
+
+        if($parent_category !='' && $sub_category == ''){
+
+       
+          @$parent_category_data=  $this->common_my_model->common($table_name ='category', $field = array(), $where = array('unique_name'=>$parent_category), $where_or = array(), $like = array(), $like_or = array(), $order = array(), $start = '', $end = '');
+
+
+
+        
+
+          $data['sub_category_list']=  $this->common_my_model->common($table_name ='category', $field = array(), $where = array('parent_id'=>@$parent_category_data['0']->cat_id,'status'=>'1'), $where_or = array(), $like = array(), $like_or = array(), $order = array(), $start = '', $end = '');
+
+         // echo "<pre>"; print_r($parent_category_data); 
+
+      // echo $parent_category_data[0]->cat_id;exit;
+
+
+        }
+
+         
+
+         
+
+         if($parent_category !='' && $sub_category!=''){
+
+
+          $sub_category_data=$this->common_my_model->common($table_name = 'category', $field = array(), $where = array('unique_name'=>$sub_category), $where_or = array(), $like = array(), $like_or = array(), $order = array(), $start = '', $end = '');
+
+         // echo $sub_category_data[0]->cat_id;exit;
+
+        }
+
+
+
+      //  echo "<pre>"; print_r($parent_category_data); 
+
+      // echo $parent_category_data[0]->cat_id;
+
+       // echo $sub_category_data[0]->cat_id;exit;
+      
+
+
+        $data_model=array(
+
+                      'parent_category_id'=>@$parent_category_data['0']->cat_id,
+                      'sub_category_id'=>@$sub_category_data['0']->cat_id,
+                      
+                     
+                      
+                    );
+
+
+
+              
+
+                 $product_list=$this->common_my_model->product_filter_list($data_model,$brand_ids,$max,$min,$orderbyprice);
+                //  echo count($total_row);exit;
+            
+
+            
+       
+         
+
+     // echo '<pre>'; 
+     // print_r($data['product_list']);exit;
+
+
+
+
+              if(count($product_list)>0){
+                    foreach($product_list as $row){
+                  ?>
+                <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 pl-1 pr-1 mb-4">
+                    
+            <div class="product-grid4">
+                <div class="product-image4">
+                   <?php  if($row->product_image !=''){ ?> <a href="<?php echo base_url();?>product-details/<?php echo $row->product_id;?>/<?php echo $row->unique_key;?>"><img class="pic-1" src="<?php echo base_url();?>uploads/product/small/<?php echo $row->product_image;?>" alt=""/> </a> <?php } ?>
+                   
+                  <?php  $valid_datetime =  date("Y-m-d H:i:s", strtotime("$row->added_date+2 days")); 
+
+                 // echo $valid_datetime; 
+
+            $current_date     =   date('Y-m-d H:i:s');
+            $time1          =   strtotime($current_date);
+            $time2          =   strtotime(@$valid_datetime);
+           // $time2 = strtotime('2020-10-05 13:00:00');
+           // $interval=$time1-$time2;
+            $interval=$time2-$time1;
+            if($interval >0){
+
+                   ?>  <span class="product-new-label">New</span>  <?php } ?>
+                    <!-- <span class="product-discount-label"> -->
+
+                      <?php
+                    if($row->product_type=='simple'){ 
+                    $discouont= ((($row->product_regular_price-$row->product_price)*100)/$row->product_regular_price);
+                      }else{
+
+                        $product_variable_attribute=  $this->common_my_model->common($table_name ='product_variable_attribute', $field = array(), $where = array('product_id'=>@$row->product_id), $where_or = array(), $like = array(), $like_or = array(), $order = array(), $start = '', $end = ''); 
+                        $product_variable_attribute_last=  $this->common_my_model->common($table_name ='product_variable_attribute', $field = array(), $where = array('product_id'=>@$row->product_id), $where_or = array(), $like = array(), $like_or = array(), $order = array('variable_attribute_id'=>'desc'), $start = '', $end = '');       
+
+                         $discouont= (((@$product_variable_attribute[0]->product_regular_price-@$product_variable_attribute[0]->product_price)*100)/@$product_variable_attribute[0]->product_regular_price);
+                          
+                      }
+
+                     // echo round($discouont);
+                    ?>
+                      
+                    <!-- </span> -->
+                </div>
+                <div class="product-content">
+                    <h3 class="title"><a href="<?php echo base_url();?>product-details/<?php echo $row->product_id;?>/<?php echo $row->unique_key;?>"><?php echo $row->product_title;?></a></h3>
+                    <div class="price">
+                        <i class="fa fa-inr" aria-hidden="true"></i> <?php if($row->product_type=='simple'){  echo $row->product_price; } else{ echo @$product_variable_attribute[0]->product_price.' - <i class="fa fa-inr" aria-hidden="true"></i>'.@$product_variable_attribute_last[0]->product_price; }?>
+                        <!-- <span>$16.00</span>-->
+                    </div>
+                    <a class="add-to-cart" href="<?php echo base_url();?>product-details/<?php echo $row->product_id;?>/<?php echo $row->unique_key;?>">ADD TO CART</a>
+                </div>
+            </div>
+        
+        </div>
+
+         <?php } } else{ echo '<h1>No Products Found.</h1>'; } ?>
+    
+
+    
+        
+ <?php   
+  }
+
+	
+
+
+
+	
+}
+?>

@@ -1,0 +1,312 @@
+
+.rt-container input {
+  position: absolute;
+  opacity: 0;
+  z-index: -1;
+}
+
+.rt-container .row {
+  display: -webkit-box;
+  display: flex;
+}
+.rt-container .row .col {
+  -webkit-box-flex: 1;
+          flex: 1;
+}
+.rt-container .row .col:last-child {
+  margin-left: 1em;
+}
+
+/* Accordion styles */
+.rt-container .tabs {
+  /*border-radius: 8px;*/
+  overflow: hidden;
+  box-shadow: 0 4px 4px -2px rgba(0, 0, 0, 0.5);
+}
+
+.rt-container .tab {
+  width: 100%;
+  color: white;
+  overflow: hidden;
+}
+.rt-container .tab-label {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+  padding: 0.7em;
+  background: #FE0000;
+  font-family: 'Open Sans', sans-serif;
+font-size: 15px;
+color: #FFFFFF;
+font-weight: 600;
+  cursor: pointer;
+  /* Icon */
+}
+.rt-container .tab-label:hover {
+  background: #d10000;
+}
+.rt-container .tab-label::after {
+  content: "\276F";
+  width: 1em;
+  height: 1em;
+  text-align: center;
+  -webkit-transition: all .35s;
+  transition: all .35s;
+}
+.rt-container .tab-content {
+  max-height: 0;
+  padding: 0 1em;
+  color: #464646;
+font-family: "Open Sans", Sans-serif;
+font-size: 14px;
+  background: white;
+  -webkit-transition: all .35s;
+  transition: all .35s;
+}
+.rt-container .tab-close {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-pack: end;
+  justify-content: flex-end;
+  padding: 1em;
+  font-size: 0.75em;
+  background: #2c3e50;
+  cursor: pointer;
+}
+.rt-container .tab-close:hover {
+  background: #d10000;
+}
+
+.rt-container input:checked +  .tab-label {
+  background: #d10000;
+}
+.rt-container input:checked +  .tab-label::after {
+  -webkit-transform: rotate(90deg);
+          transform: rotate(90deg);
+}
+.rt-container input:checked ~ .tab-content {
+  max-height: 100vh;
+  padding: 1em;
+}
+
+
+/*==========================For 2nd accordian=============================*/
+
+
+.rt-container-new input {
+  position: absolute;
+  opacity: 0;
+  z-index: -1;
+}
+
+.rt-container-new .row {
+  display: -webkit-box;
+  display: flex;
+}
+.rt-container-new .row .col {
+  -webkit-box-flex: 1;
+          flex: 1;
+}
+.rt-container-new .row .col:last-child {
+  margin-left: 1em;
+}
+
+/* Accordion styles */
+.rt-container-new .tabs {
+  /*border-radius: 8px;*/
+  overflow: hidden;
+  box-shadow: 0 4px 4px -2px rgba(0, 0, 0, 0.5);
+}
+
+.rt-container-new .tab {
+  width: 100%;
+  color: white;
+  overflow: hidden;
+}
+.rt-container-new .tab-label {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+  padding: 0.7em;
+  background: #FE0000;
+  font-family: 'Open Sans', sans-serif;
+font-size: 15px;
+color: #FFFFFF;
+font-weight: 600;
+  cursor: pointer;
+  /* Icon */
+}
+.rt-container-new .tab-label:hover {
+  background: #d10000;
+}
+.rt-container-new .tab-label::after {
+  content: "\276F";
+  width: 1em;
+  height: 1em;
+  text-align: center;
+  -webkit-transition: all .35s;
+  transition: all .35s;
+}
+.rt-container-new .tab-content {
+  max-height: 0;
+  padding: 0 1em;
+  color: #464646;
+font-family: "Open Sans", Sans-serif;
+font-size: 14px;
+  background: white;
+  -webkit-transition: all .35s;
+  transition: all .35s;
+}
+.rt-container-new .tab-close {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-pack: end;
+  justify-content: flex-end;
+  padding: 1em;
+  font-size: 0.75em;
+  background: #2c3e50;
+  cursor: pointer;
+}
+.rt-container-new .tab-close:hover {
+  background: #d10000;
+}
+
+.rt-container-new input:checked +  .tab-label {
+  background: #d10000;
+}
+.rt-container-new input:checked +  .tab-label::after {
+  -webkit-transform: rotate(90deg);
+          transform: rotate(90deg);
+}
+.rt-container-new input:checked ~ .tab-content {
+  max-height: 100vh;
+  padding: 1em;
+}
+
+
+/*==========================LightBox=============================/*
+
+
+#myImg {
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#myImg:hover {opacity: 0.7;}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 3; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+}
+
+/* Modal Content (image) */
+.modal-content {
+  margin: auto;
+  display: block;
+  width: 80%;
+  max-width: 700px;
+}
+
+/* Caption of Modal Image */
+#caption {
+  margin: auto;
+  display: block;
+  width: 80%;
+  max-width: 700px;
+  text-align: center;
+  color: #ccc;
+  padding: 10px 0;
+  height: 150px;
+}
+
+/* Add Animation */
+.modal-content, #caption {  
+  -webkit-animation-name: zoom;
+  -webkit-animation-duration: 0.6s;
+  animation-name: zoom;
+  animation-duration: 0.6s;
+}
+
+@-webkit-keyframes zoom {
+  from {-webkit-transform:scale(0)} 
+  to {-webkit-transform:scale(1)}
+}
+
+@keyframes zoom {
+  from {transform:scale(0)} 
+  to {transform:scale(1)}
+}
+
+/* The Close Button */
+.close {
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  color: #f1f1f1;
+  font-size: 40px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.close:hover,
+.close:focus {
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* The Close Button */
+.close-hin {
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  color: #f1f1f1;
+  font-size: 40px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.close-hin:hover,
+.close-hin:focus {
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* The Close Button */
+.close-ben {
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  color: #f1f1f1;
+  font-size: 40px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.close-ben:hover,
+.close-ben:focus {
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* 100% Image Width on Smaller Screens */
+@media only screen and (max-width: 700px){
+  .modal-content {
+    width: 100%;
+  }
+}
