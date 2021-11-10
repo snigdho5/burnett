@@ -112,3 +112,4 @@ define("SHIPROCKET_USERNAME", 'burnetthomeo1985@gmail.com');
 define("SHIPROCKET_PASSWORD", 'fH5t$Po!s');
 define("SHIPROCKET_CHANNEL_ID", "691009");
 define("SHIPROCKET_PICKUP_LOCATION", "burnett");
+define("SHIPROCKET_PICKUP_PIN", "743248");

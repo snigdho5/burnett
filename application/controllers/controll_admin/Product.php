@@ -804,8 +804,7 @@ class Product extends CI_Controller
       }
     }
 
-    print_obj($image);
-    die;
+    // print_obj($image);die;
 
     try {
       $inputFileType = PHPExcel_IOFactory::identify($uploaded_filepath);
@@ -898,7 +897,7 @@ class Product extends CI_Controller
       redirect(base_url() . BaseAdminURl . '/product/bulkupload');
     }
 
-    die;
+    // die;
 
 
     $product_type = $this->input->post('select_product_option');

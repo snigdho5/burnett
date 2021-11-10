@@ -22,11 +22,11 @@
 
                         <?php if ($key == '0') { ?>
                             <div class="item imagebig1">
-                                <img data-toggle="magnify" src="<?php echo base_url(); ?>uploads/product/small/<?php echo $row_image->product_image; ?>" alt="<?php echo isset($product_info[0]->alt_for_product_image) ? $product_info[0]->alt_for_product_image : ''; ?>" />
+                                <img data-toggle="magnify" src="<?php echo base_url(); ?>uploads/product/large/<?php echo $row_image->product_image; ?>" alt="<?php echo isset($product_info[0]->alt_for_product_image) ? $product_info[0]->alt_for_product_image : ''; ?>" />
                             </div>
                         <?php } else { ?>
                             <div class="item imagebig1">
-                                <img src="<?php echo base_url(); ?>uploads/product/small/<?php echo $row_image->product_image; ?>" alt="<?php echo isset($product_info[0]->alt_for_product_image) ? $product_info[0]->alt_for_product_image : ''; ?>" />
+                                <img src="<?php echo base_url(); ?>uploads/product/large/<?php echo $row_image->product_image; ?>" alt="<?php echo isset($product_info[0]->alt_for_product_image) ? $product_info[0]->alt_for_product_image : ''; ?>" />
                             </div>
                         <?php } ?>
 
@@ -219,13 +219,13 @@
                             </form>
 
 
-                            <div class="cart-btns" style="display: none;">
+                            <div class="cart-btns" >
                                 <a href="javascript:void(0);" class="round-black-btn" id="btnaddtocart" onClick="submitDetailsForm()">Add to Cart</a>
                                 <!--<input type="submit" class="round-black-btn" value="Add to Cart" />-->
 
-                                <a href="#" onclick="wishlist('<?php echo $this->uri->segment(2); ?>');" class="round-black-btn">Add to Wishlist</a>
+                                <!-- <a href="#" onclick="wishlist('<?php echo $this->uri->segment(2); ?>');" class="round-black-btn">Add to Wishlist</a> -->
 
-                                <a href="#" class="round-black-btn" data-toggle="modal" data-target="#myModal1">Add Enquiry
+                                <!-- <a href="#" class="round-black-btn" data-toggle="modal" data-target="#myModal1">Add Enquiry -->
                                     <div></div>
                                 </a>
                             </div>
@@ -351,14 +351,15 @@
 
 
                             <p class="add_to_cart_multicart"><a href="javascript:void(0);" class="round-black-btn" id="btnaddtocart" onclick="submitCartForm()">Add to Cart</a></p>
-                            <div class="continue_addtowishlist_block">
-                                <p class="buttons_bottom_block">
-                                    <a href="#" id="wishlist_button" onclick="WishlistCart('wishlist_block_list', 'add', '3945', $('#idCombination').val(), document.getElementById('quantity_wanted').value); return false;" title="Add to my wishlist">Add to wishlist</a>
-                                </p>
+                            &nbsp;&nbsp;
+                            <!-- <div class="continue_addtowishlist_block"> -->
+                                <!-- <p class="buttons_bottom_block"> -->
+                                    <!-- <a href="#" id="wishlist_button" onclick="WishlistCart('wishlist_block_list', 'add', '3945', $('#idCombination').val(), document.getElementById('quantity_wanted').value); return false;" title="Add to my wishlist">Add to wishlist</a> -->
+                                <!-- </p> -->
 
-                                <p class="continue-shopping"><a href="#">Continue Shopping</a></p>
+                                <!-- <p class="continue-shopping"><a href="#">Continue Shopping</a></p> -->
 
-                            </div>
+                            <!-- </div> -->
 
 
                             <div class="cont_stock">
@@ -1150,10 +1151,10 @@
 
                             $('.pin-checker-msg').html('<b style=""><i class="fa fa-check-circle" aria-hidden="true" style="color:green; font-size:20px;"></i>  ' + resp.message + '</b>');
                             $('.couriers-msg').show();
-                            // $('.couriers-msg').html('<b style=""><i class="fa fa-plane" aria-hidden="true" style="color:green; font-size:20px;"></i>  Available Couriers: ' + resp.couriers_count + '</b>');
-                            // $('.delivery-company-p').show();
-                            // $('.cart-btns').show();
-                            // $('.delivery-company').html(resp.courier_options);
+                            $('.couriers-msg').html('<b style=""><i class="fa fa-plane" aria-hidden="true" style="color:green; font-size:20px;"></i>  Available Couriers: ' + resp.couriers_count + '</b>');
+                            $('.delivery-company-p').show();
+                            $('.cart-btns').show();
+                            $('.delivery-company').html(resp.courier_options);
 
                         } else if (resp.success == "0") {
 

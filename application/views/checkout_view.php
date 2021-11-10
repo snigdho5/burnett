@@ -155,40 +155,6 @@
               <label class="custom-control-label" for="save-info">Save this information for next time</label>
             </div> -->
 
-          <!-- Pincode checker // -snigdho -->
-          <div class="row">
-            <div class="col-md-3">
-              <label for="pincode">Check Availability</label>
-              <input type="hidden" class="cod-val" name="cod_val" value="0">
-              <input type="hidden" class="p-weight" name="weight" value="<?php echo @$product_details[0]->weight; ?>">
-              <input type="text" class="form-control user-pincode" placeholder="Enter Pincode.." value="">
-            </div>
-            <div class="col-md-1">
-              <label for="pincode">Online</label>
-              <input type="radio" class="form-control is-cod" name="is_cod" placeholder="Enter Pincode.." value="0" checked>
-            </div>
-            <div class="col-md-1">
-              <label for="pincode">COD</label>
-              <input type="radio" class="form-control is-cod" name="is_cod" placeholder="Enter Pincode.." value="1">
-            </div>
-            <div class="col-md-2">
-              <label for="pin"> </label>
-              <button type="button" class="round-black-btn btn-check-pincode">Check</button>
-            </div>
-            <div class="col-md-5">
-              <label for="pin"> </label>
-              <p class="pin-checker-msg"></p>
-              <p class="couriers-msg"></p>
-              <p class="delivery-company-p" style="display: none;">
-                <select id="delivery_company" name="delivery_company" class="form-control delivery-company">
-
-                </select>
-              </p>
-            </div>
-          </div>
-
-          <!-- Pincode checker ends// -snigdho -->
-
 
           <div class="form-control up-prescription">
             <label for="upload_prescription">Upload Prescription</label>
@@ -1281,81 +1247,6 @@
   }
 
 
-  $('body').on('click', '.btn-check-pincode', function() {
-    var numberRegex = /^[+-]?\d+(\.\d+)?([eE][+-]?\d+)?$/;
-    var user_pincode = $('.user-pincode').val();
-    var productid = $('.product-id').val();
-    var product_nm = $('.product-nm').val();
-    var cod_val = $('.cod-val').val();
-    var weight = $('.p-weight').val();
-
-    pinlen = user_pincode.length;
-
-    // console.log(user_pincode);
-    // console.log(productid);
-    // console.log(product_nm);
-    // console.log(cod_val);
-    console.log(weight);
-    $('.pin-checker-msg').hide();
-    $('.couriers-msg').hide();
-    $('.delivery-company-p').hide();
-    $('.cart-btns').hide();
-    $('.btn-check-pincode').prop('disabled', true);
-
-
-    if (user_pincode != '' && numberRegex.test(user_pincode) && pinlen == 6 && productid != '' && product_nm != '' && cod_val != '') {
-
-      if (weight != '') {
-        $('.pin-checker-msg').show();
-        $('.btn-check-pincode').prop('disabled', true);
-        $('.pin-checker-msg').html('<i class="fa fa-spinner fa-spin" style="font-size:24px"></i>');
-        $.ajax({
-          type: 'POST',
-          url: '<?php echo base_url(); ?>check-pincode',
-          data: {
-            user_pincode: user_pincode,
-            productid: productid,
-            product_nm: product_nm,
-            cod_val: cod_val,
-            weight: weight
-          },
-
-          success: function(resp) {
-
-            if (resp.success == "1") {
-
-              $('.pin-checker-msg').html('<b style=""><i class="fa fa-check-circle" aria-hidden="true" style="color:green; font-size:20px;"></i>  ' + resp.message + '</b>');
-              $('.couriers-msg').show();
-              // $('.couriers-msg').html('<b style=""><i class="fa fa-plane" aria-hidden="true" style="color:green; font-size:20px;"></i>  Available Couriers: ' + resp.couriers_count + '</b>');
-              // $('.delivery-company-p').show();
-              // $('.cart-btns').show();
-              // $('.delivery-company').html(resp.courier_options);
-
-            } else if (resp.success == "0") {
-
-              $('.pin-checker-msg').html('<b style=""><i class="fa fa-times-circle-o" aria-hidden="true" style="color:red; font-size:20px;"></i> ' + resp.message + '</b>');
-
-            } else {
-
-              //window.location.href=resp.redirect;
-            }
-
-          }
-        });
-        $('.btn-check-pincode').prop('disabled', false);
-      } else {
-        $('.pin-checker-msg').show();
-        $('.pin-checker-msg').html('<b style=""><i class="fa fa-times-circle-o" aria-hidden="true" style="color:red; font-size:20px;"></i> Product weight not found!</b>');
-        $('.btn-check-pincode').prop('disabled', false);
-      }
-    } else {
-      $('.pin-checker-msg').show();
-      $('.pin-checker-msg').html('<b style=""><i class="fa fa-times-circle-o" aria-hidden="true" style="color:red; font-size:20px;"></i> Please enter 6 digit Pincode!</b>');
-      $('.btn-check-pincode').prop('disabled', false);
-    }
-
-
-  });
 </script>
 
 

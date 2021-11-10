@@ -24,16 +24,17 @@ class Shiprocket_Access extends CI_Controller
             $product_id = xss_clean($this->input->post('productid'));
             $product_name = xss_clean($this->input->post('product_nm'));
             $cod = xss_clean($this->input->post('cod_val'));
+            $weight = xss_clean($this->input->post('weight'));
 
             if ($pincode != '') {
                 // invoke shiprocket api
                 $cod = ($cod != '')?$cod:0;
 
                 $postData = array(
-                    'pickup_postcode' => '700001',
+                    'pickup_postcode' => SHIPROCKET_PICKUP_PIN,
                     'delivery_postcode' => $pincode,
                     'cod' => $cod,
-                    'weight' => '0.5'
+                    'weight' => $weight//gms
                 );
 
                 $shipState = $this->shiprocket->serviceability($postData);
@@ -46,7 +47,7 @@ class Shiprocket_Access extends CI_Controller
                     'pickup_postcode' => '700001',
                     'delivery_postcode' => $pincode,
                     'cod' => $cod,
-                    'weight' => '0.5',
+                    'weight' => $weight,
                     'product_id' => $product_id,
                     'product_name' => $product_name,
                     'created_at' => DTIME,
@@ -62,7 +63,6 @@ class Shiprocket_Access extends CI_Controller
                         $count_couriers = count($availableCourierCompanies);
                         $html = '';
                         foreach ($availableCourierCompanies as $key => $value) {
-                            # code...
                             $html .= '<option value="'.$value['courier_company_id'].'">'.$value['courier_name'].' [ETA: '.$value['etd'].', Rs.: '.$value['rate'].']</option>';
                         }
                         //print_obj($html);die;

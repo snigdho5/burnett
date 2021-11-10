@@ -32,15 +32,19 @@ class Checkout extends CI_Controller
     }
 
 
-    foreach ($cart as $k => $item) {
+    // foreach ($cart as $k => $item) {
+    //   $product_id = $item['id'];
+    //   // echo number_format($curr_subtotal, 2);
+    // }
 
-      $id_check = $item['id'];
-      // echo number_format($curr_subtotal, 2);
-    }
 
-
-    // print_obj($id_check);die;
+    // echo($id_check);
     // print_obj($cart);die;
+
+    // $data['product_list'] = $this->common_my_model->common($table_name = 'product', $field = array(), $where = array('status' => '1', 'product_id' => $product_id), $where_or = array(), $like = array(), $like_or = array(), $order = array(), $start = '', $end = '');
+
+    
+    // print_obj($data['product_list']);die;
 
     $data['user_billing_address_details'] =  $this->common_my_model->common($table_name = 'user_billing_address', $field = array(), $where = array('user_id' => $user_id, 'default_billing' => '1'), $where_or = array(), $like = array(), $like_or = array(), $order = array(), $start = '', $end = '');
 
@@ -363,7 +367,7 @@ class Checkout extends CI_Controller
       // exit;
 
       // shiprocket
-      $post['pickup_postcode'] = '713409';
+      $post['pickup_postcode'] = SHIPROCKET_PICKUP_PIN;
       $post['delivery_postcode'] = $pincode;
       $post['cod'] = 0;
       $post['weight'] = '0.5';
