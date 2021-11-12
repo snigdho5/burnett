@@ -884,6 +884,7 @@ class Api extends CI_Controller
 						'review_id' => $value['review_id'],
 						'user_id' => $value['user_id'],
 						'product_id' => $value['product_id'],
+						'product_title' => $value['product_title'],
 						'name' => $value['name'],
 						'email_id' => $value['email_id'],
 						'message' => $value['message'],

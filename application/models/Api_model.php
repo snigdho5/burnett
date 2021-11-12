@@ -785,7 +785,8 @@ class Api_model extends CI_Model {
 	public function getReviewData($param = null, $many = FALSE, $order = 'DESC', $order_by = 'review_id')
 	{
 
-		$this->db->select('*');
+		$this->db->select('product_review.*, product.product_title');
+		$this->db->join('product', 'product.unique_key = product_review.product_id', 'left');
 
 		if ($param != null) {
 			$this->db->where($param);
