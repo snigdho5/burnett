@@ -270,12 +270,12 @@
                                         //echo '<pre>'; print_r($product_variable_attribute);echo '</pre>'; die;
                                         foreach ($product_variable_attribute as $pv) {
                                             $product_att_val =  $this->common_my_model->common($table_name = 'product_attribute', $field = array(), $where = array('product_attribute_id' => @$pv->variation_id), $where_or = array(), $like = array(), $like_or = array(), $order = array(), $start = '', $end = '');
-                                            //echo 'ff<pre>'; print_r($product_att_val);echo '</pre>';
+                                            // print_obj($product_att_val);die;
                                         ?>
                                             <li>
                                                 <ul>
                                                     <li class="checkbox-detail">
-                                                        <input type="checkbox" value="<?php echo $pv->variable_attribute_id; ?>" class="product-checkbox" data-weight="<?php echo ($product_att_val[0]->weight != '') ? $product_att_val[0]->weight : '0'; ?>" id="check_<?php echo $pv->variable_attribute_id; ?>" name="chkpack[]"><input type="hidden" name="txtsize_<?php echo $pv->variable_attribute_id; ?>" value="<?php echo $product_att_val[0]->name; ?>" />
+                                                        <input type="checkbox" value="<?php echo $pv->variable_attribute_id; ?>" class="product-checkbox" data-weight="<?php echo ($product_att_val[0]->weight != '') ? $product_att_val[0]->weight : '0.3'; ?>" id="check_<?php echo $pv->variable_attribute_id; ?>" name="chkpack[]"><input type="hidden" name="txtsize_<?php echo $pv->variable_attribute_id; ?>" value="<?php echo $product_att_val[0]->name; ?>" />
                                                     </li>
                                                     <li class="packaging-detail"><?php echo $product_att_val[0]->name; ?></li>
                                                     <li class="size-detail">
@@ -1124,7 +1124,7 @@
         $('.pin-checker-msg').hide();
         $('.couriers-msg').hide();
         $('.delivery-company-p').hide();
-        $('.cart-btns').hide();
+        // $('.cart-btns').hide();
         $('.btn-check-pincode').prop('disabled', true);
 
 
@@ -1152,9 +1152,9 @@
                             $('.pin-checker-msg').html('<b style=""><i class="fa fa-check-circle" aria-hidden="true" style="color:green; font-size:20px;"></i>  ' + resp.message + '</b>');
                             $('.couriers-msg').show();
                             $('.couriers-msg').html('<b style=""><i class="fa fa-plane" aria-hidden="true" style="color:green; font-size:20px;"></i>  Available Couriers: ' + resp.couriers_count + '</b>');
-                            $('.delivery-company-p').show();
-                            $('.cart-btns').show();
-                            $('.delivery-company').html(resp.courier_options);
+                            // $('.delivery-company-p').show();
+                            // $('.cart-btns').show();
+                            // $('.delivery-company').html(resp.courier_options);
 
                         } else if (resp.success == "0") {
 

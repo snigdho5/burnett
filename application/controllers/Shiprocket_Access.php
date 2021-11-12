@@ -61,11 +61,11 @@ class Shiprocket_Access extends CI_Controller
 
                     if (!empty($availableCourierCompanies)) {
                         $count_couriers = count($availableCourierCompanies);
-                        $html = '';
+                        $html = '<option value="">Select</option>';
                         foreach ($availableCourierCompanies as $key => $value) {
-                            $html .= '<option value="'.$value['courier_company_id'].'">'.$value['courier_name'].' [ETA: '.$value['etd'].', Rs.: '.$value['rate'].']</option>';
+                            $html .= '<option value="'.$value['courier_company_id'].'" data-rate="'.$value['rate'].'">'.$value['courier_name'].' [ETA: '.$value['etd'].', Rs.: '.$value['rate'].']</option>';
                         }
-                        //print_obj($html);die;
+                        // print_obj($availableCourierCompanies);die;
                         $return['couriers_count'] = $count_couriers;
                         $return['courier_options'] = $html;
                     }

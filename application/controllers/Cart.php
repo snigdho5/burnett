@@ -75,6 +75,7 @@ class Cart extends CI_Controller
 						'price' => $product_price,
 						'size' => $size,
 						'qty' => (int)$final_qty,
+						'shipping_rate'     => '',
 						'options' => array('Size' => $size)
 					);
 
@@ -141,6 +142,7 @@ class Cart extends CI_Controller
 										'price' => $product_price,
 										'size' => $product_att_val[0]->name,
 										'qty' => ($fqty > 0) ? $fqty : '1',
+										'shipping_rate'     => '',
 										'options' => array('size' => $product_att_val[0]->name)
 									);
 								} else {
@@ -150,6 +152,7 @@ class Cart extends CI_Controller
 										'price' => $product_price,
 										'size' => $product_att_val[0]->name,
 										'qty' => ($fqty > 0) ? $fqty : '1',
+										'shipping_rate'     => '',
 										'options' => array('size' => $product_att_val[0]->name)
 									);
 								}
@@ -217,6 +220,7 @@ class Cart extends CI_Controller
 			'name' => $this->input->post('name'),
 			'price' => $this->input->post('price'),
 			'qty' => $final_qty,
+			'shipping_rate'     => '',
 		);
 
 		if ($this->cart->insert($insert_data)) {
@@ -244,21 +248,21 @@ class Cart extends CI_Controller
 	public function update_cart()
 	{
 		$cart_info =  $_POST['cart'];
-		//echo '<pre>'; print_r($cart_info); echo '</pre>'; die;
+		// print_obj($cart_info); die;
 		foreach ($cart_info as $id => $cart) {
 			$rowid = $cart['rowid'];
 			$price = $cart['price'];
 			$amount = $price * $cart['qty'];
 			$qty = $cart['qty'];
+			$shipping_rate = $cart['shipping_rate'];
 			$product_details = $this->product_model->product_details_by_id($cart['id']);
 			//echo $product_details[0]->stock_count;exit;
 			if ($qty <= $product_details[0]->stock_count) {
-
-
 				$data = array(
 					'rowid'   => $rowid,
 					'price'   => $price,
 					'amount' =>  $amount,
+					'shipping_rate'     => $shipping_rate,
 					'qty'     => $qty
 				);
 			} else {

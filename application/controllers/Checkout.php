@@ -43,7 +43,7 @@ class Checkout extends CI_Controller
 
     // $data['product_list'] = $this->common_my_model->common($table_name = 'product', $field = array(), $where = array('status' => '1', 'product_id' => $product_id), $where_or = array(), $like = array(), $like_or = array(), $order = array(), $start = '', $end = '');
 
-    
+
     // print_obj($data['product_list']);die;
 
     $data['user_billing_address_details'] =  $this->common_my_model->common($table_name = 'user_billing_address', $field = array(), $where = array('user_id' => $user_id, 'default_billing' => '1'), $where_or = array(), $like = array(), $like_or = array(), $order = array(), $start = '', $end = '');
@@ -2040,6 +2040,7 @@ class Checkout extends CI_Controller
       <?php $cart = $this->cart->contents();
 
       $curr_subtotal = 0;
+      $shipping_cost = 0;
       $grand_total = 0;
       $cgst = 9;
       $sgst = 9;
@@ -2059,7 +2060,8 @@ class Checkout extends CI_Controller
 
         $curr_subtotal = $item['price'] * $item['qty'];
         // echo number_format($curr_subtotal, 2);
-        $grand_total = $grand_total + $curr_subtotal;
+        $shipping_cost += $item['shipping_rate'];
+        $grand_total = $grand_total + $curr_subtotal + $shipping_cost;
 
 
       ?>
@@ -2069,7 +2071,16 @@ class Checkout extends CI_Controller
           </div>
           <span class="text-muted"><i class="fa fa-inr" aria-hidden="true"></i> <?php echo number_format(@$item['price'], 2); ?></span>
         </li>
-      <?php } ?>
+
+        <li class="list-group-item d-flex justify-content-between lh-condensed">
+          <div>
+            <h6 class="my-0">Shipping Cost</h6>
+          </div>
+          <span class="text-muted"><i class="fa fa-inr" aria-hidden="true"></i> <?php echo number_format(@$item['shipping_rate'], 2); ?></span>
+        </li>
+      <?php 
+      $shipping_cost = 0;
+      } ?>
 
       <!--  <li class="list-group-item d-flex justify-content-between lh-condensed">
               <div>

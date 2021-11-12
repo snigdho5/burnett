@@ -234,6 +234,7 @@
           // print_obj($cart);die;
 
           $curr_subtotal = 0;
+          $shipping_cost = 0;
           $grand_total = 0;
           $cgst = 9;
           $sgst = 9;
@@ -253,8 +254,8 @@
 
             $curr_subtotal = $item['price'] * $item['qty'];
             // echo number_format($curr_subtotal, 2);
-            $grand_total = $grand_total + $curr_subtotal;
-
+            $shipping_cost += $item['shipping_rate'];
+            $grand_total = $grand_total + $curr_subtotal + $shipping_cost;
 
           ?>
 
@@ -265,7 +266,17 @@
               <span class="text-muted"><i class="fa fa-inr" aria-hidden="true"></i> <?php echo number_format(@$item['price'], 2); ?></span>
             </li>
 
-          <?php } ?>
+            <li class="list-group-item d-flex justify-content-between lh-condensed">
+              <div>
+                <h6 class="my-0">Shipping Cost</h6>
+              </div>
+              <span class="text-muted"><i class="fa fa-inr" aria-hidden="true"></i> <?php echo number_format(@$item['shipping_rate'], 2); ?></span>
+            </li>
+
+          <?php
+
+            $shipping_cost = 0;
+          } ?>
 
           <!--  <li class="list-group-item d-flex justify-content-between lh-condensed">
               <div>
@@ -1245,8 +1256,6 @@
 
 
   }
-
-
 </script>
 
 
