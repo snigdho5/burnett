@@ -107,7 +107,7 @@ class Checkout extends CI_Controller
           <option value="Office">Office</option>
         </select>
       </div>
-      <div class="row"> 
+      <div class="row">
         <div class="col-md-5 mb-3">
           <label for="country">Country</label>
           <select class="custom-select d-block w-100" id="ship_country" name="ship_country">
@@ -312,7 +312,7 @@ class Checkout extends CI_Controller
       $wallet_pay_for_check = $this->session->userdata('session_wallet_pay_for_check');
 
 
-
+      // print_obj($this->input->post());die;
 
       if ($checkbox_same_billing_out == 'same_not') {
 
@@ -457,8 +457,7 @@ class Checkout extends CI_Controller
       $shipping_cost = 0;
 
       foreach ($order_cart as $k => $item) {
-
-        $curr_subtotal = $item['price'] * $item['qty'];
+        $curr_subtotal = ($item['price'] * $item['qty']) + $item['shipping_rate'];
         // echo number_format($curr_subtotal, 2);
         $grand_total = $grand_total + $curr_subtotal;
       }
@@ -510,10 +509,6 @@ class Checkout extends CI_Controller
 
 
 
-
-
-
-
       /*----- User Discount --------*/
 
 
@@ -541,14 +536,7 @@ class Checkout extends CI_Controller
         $upload_prescription = $new_name . "." . $ext;
       }
 
-
-
-
-
-
       if ($payment_type == "cod") {
-
-
 
 
         if ($wallet_pay_for_check == "wallet_pay") {
@@ -562,8 +550,6 @@ class Checkout extends CI_Controller
             if (@$chk_amt[0]->wallet_amount < @$grand_total) {
 
               $pay_wallet_amount = @$chk_amt[0]->wallet_amount;
-
-
 
 
               /*$data_amt=array('wallet_amount'=>0);
@@ -2078,8 +2064,8 @@ class Checkout extends CI_Controller
           </div>
           <span class="text-muted"><i class="fa fa-inr" aria-hidden="true"></i> <?php echo number_format(@$item['shipping_rate'], 2); ?></span>
         </li>
-      <?php 
-      $shipping_cost = 0;
+      <?php
+        $shipping_cost = 0;
       } ?>
 
       <!--  <li class="list-group-item d-flex justify-content-between lh-condensed">
