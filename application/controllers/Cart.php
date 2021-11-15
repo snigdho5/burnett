@@ -248,6 +248,7 @@ class Cart extends CI_Controller
 	public function update_cart()
 	{
 		$cart_info =  $_POST['cart'];
+		$redirect =  $_POST['redirect'];
 		// print_obj($cart_info); die;
 		foreach ($cart_info as $id => $cart) {
 			$rowid = $cart['rowid'];
@@ -274,7 +275,8 @@ class Cart extends CI_Controller
 			$this->cart->update($data);
 		}
 		$this->session->set_flashdata('cart_info', '<div class="alert alert-success"><strong></strong>Cart updated successfully.</div>');
-		redirect('cart');
+
+		redirect($redirect);
 	}
 
 	public function billing_view()

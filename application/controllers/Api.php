@@ -862,22 +862,22 @@ class Api extends CI_Controller
 		$json = json_encode($data);
 		echo $json;
 	}
-	
+
 
 	public function review_list()
 	{
 		header('Content-Type: application/json');
 		header('Access-Control-Allow-Origin: *');
 
-		$user_id   = xss_clean(($this->input->get('user_id') != '') ? $this->input->get('user_id') : '');//uid
+		$user_id   = xss_clean(($this->input->get('user_id') != '') ? $this->input->get('user_id') : ''); //uid
 
-		if($user_id != ''){
+		if ($user_id != '') {
 
 			$arrReviewData = $this->api_model->getReviewData(array('user_id' => $user_id), TRUE);
 
 			// print_obj($arrReviewData);die;
 
-			if(!empty($arrReviewData)){
+			if (!empty($arrReviewData)) {
 
 				foreach ($arrReviewData as $key => $value) {
 					$resp[] = array(
@@ -891,7 +891,7 @@ class Api extends CI_Controller
 						'date_added' => $value['date_added'],
 					);
 				}
-		
+
 				if (!empty($resp)) {
 					$data['respData'] = $resp;
 					$data['code'] = '200';
@@ -902,20 +902,96 @@ class Api extends CI_Controller
 					$data['status'] = 'failed';
 					$data['message'] = '';
 				}
-			}else{
+			} else {
 				$data['code'] = '201';
 				$data['status'] = 'failed';
 				$data['message'] = 'No review found!';
 			}
-		
-		}else{
+		} else {
 			$data['code'] = '201';
 			$data['status'] = 'failed';
 			$data['message'] = 'Validation Failure!';
 		}
 
 
+
+		$json = json_encode($data);
+		echo $json;
+	}
+
+
+	public function privacy_policy()
+	{
+		header('Content-Type: application/json');
+		header('Access-Control-Allow-Origin: *');
+
+		$seo_content_details =  $this->common_my_model->common($table_name = 'seo_module', $field = array(), $where = array('seo_module_id' => '15'), $where_or = array(), $like = array(), $like_or = array(), $order = array(), $start = '', $end = '');
+
+		// print_obj($seo_content_details);die;
+
+		if (!empty($seo_content_details)) {
+
+
+			$resp[] = array(
+				'description' => $seo_content_details[0]->meta_description,
+				// 'keyword' => $seo_content_details[0]->meta_keyword
+			);
+
+			$data['respData'] = $resp;
+			$data['code'] = '200';
+			$data['status'] = 'success';
+			$data['message'] = 'Data Found!';
+		} else {
+			$data['code'] = '201';
+			$data['status'] = 'failed';
+			$data['message'] = 'Data not found!';
+		}
+
+		$json = json_encode($data);
+		echo $json;
+	}
+
+
+	public function blog_list()
+	{
+		header('Content-Type: application/json');
+		header('Access-Control-Allow-Origin: *');
+
 		
+		$blog_id   = xss_clean(($this->input->get('blog_id') != '') ? $this->input->get('blog_id') : ''); //uid
+
+		if ($blog_id != '') {
+			$blogs =  $this->common_my_model->common($table_name = 'blog', $field = array(), $where = array('status' => '1', 'blog_id'=>$blog_id), $where_or = array(), $like = array(), $like_or = array(), $order = array(), $start = '', $end = '');
+		}else{
+			$blogs =  $this->common_my_model->common($table_name = 'blog', $field = array(), $where = array('status' => '1'), $where_or = array(), $like = array(), $like_or = array(), $order = array(), $start = '', $end = '');
+		}
+
+		// print_obj($blogs);die;
+
+		if (!empty($blogs)) {
+
+			// foreach ($blogs as $key => $value) {
+			// 	$resp[] = array(
+			// 		'blog_id' => $value['blog_id']
+			// 	);
+			// }
+
+			if ($blog_id != '') {
+				$data['respData'] = $blogs[0];
+			}else{
+				$data['respData'] = $blogs;
+			}
+			
+			$data['code'] = '200';
+			$data['status'] = 'success';
+			$data['message'] = 'Data Found!';
+		} else {
+			$data['code'] = '201';
+			$data['status'] = 'failed';
+			$data['message'] = 'Data not found!';
+		}
+		
+
 		$json = json_encode($data);
 		echo $json;
 	}

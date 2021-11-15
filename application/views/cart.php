@@ -85,6 +85,7 @@ $cart = $this->cart->contents();
                                                 <div class="row">
                                                     <div class="col-md-3">
                                                         <label for="pincode">Check Availability</label>
+                                                        <input type="hidden" name="redirect" value="" class="redirect" id="redirect">
                                                         <input type="hidden" id="cod-val-<?php echo $k; ?>" class="cod-val" name="cart[<?php echo $item['rowid'] ?>][cod_val]" value="0">
                                                         <input type="hidden" id="p-weight-<?php echo $k; ?>" class="p-weight weight-var" name="cart[<?php echo $item['rowid'] ?>][weight]" value="<?php echo ($product_details[0]->weight != '') ? $product_details[0]->weight : '0.3'; ?>">
                                                         <input type="hidden" id="shipping_rate<?php echo $k; ?>" name="cart[<?php echo $item['rowid'] ?>][shipping_rate]" class="form-control shipping_rate" placeholder="" value="<?php echo ($item['shipping_rate'] != '') ? $item['shipping_rate'] : ''; ?>">
@@ -231,8 +232,10 @@ $cart = $this->cart->contents();
             // console.log(ship_comma_count);
 
             if (shipcost > 0) {
+                $('#redirect').val('cart');
                 $("#frmupdatecart").submit();
             } else if (count_cart == ship_comma_count) {
+                $('#redirect').val('cart');
                 $("#frmupdatecart").submit();
             } else {
                 $("#cart-msg").show();
@@ -266,7 +269,26 @@ $cart = $this->cart->contents();
 
 <script type="text/javascript">
     function go_to_checkout() {
-        window.location.href = "<?php echo base_url(); ?>checkout";
+
+        $("#cart-msg").hide();
+        var shipcost = $('.ship-cost').attr('data-shipcost');
+        var ship_comma = $('#shipping-rate-comma').val();
+        var count_cart = $('#count-cart').val();
+        var ship_comma_count = ship_comma.split(",").length - 1;
+
+        if (shipcost > 0) {
+            $('#redirect').val('checkout');
+            $("#frmupdatecart").submit();
+        } else if (count_cart == ship_comma_count) {
+            $('#redirect').val('checkout');
+            $("#frmupdatecart").submit();
+        } else {
+            $("#cart-msg").show();
+            $("#cart-msg").html('<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Please select shipping to proceed!');
+            $("#cart-msg").css("color", "red");
+            $("#cart-msg").css("text-align", "right");
+        }
+
     }
 
     $('body').on('change', '.delivery-company', function() {
@@ -296,10 +318,6 @@ $cart = $this->cart->contents();
         pinlen = user_pincode.length;
 
         // console.log(user_pincode);
-        // console.log(productid);
-        // console.log(product_nm);
-        // console.log(cod_val);
-        // console.log(weight);
         $('.pin-checker-msg' + id).hide();
         $('.couriers-msg' + id).hide();
         $('.delivery-company-p' + id).hide();
