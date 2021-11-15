@@ -13,7 +13,9 @@ class Sign_up extends CI_Controller
 	
 	public function index()
 	{
-		$data['seo_content_details']=  $this->common_my_model->common($table_name ='seo_module', $field = array(), $where = array('seo_module_id'=>'13'), $where_or = array(), $like = array(), $like_or = array(), $order = array(), $start = '', $end = '');
+		$data['seo_content_details'] =  $this->common_my_model->common($table_name ='seo_module', $field = array(), $where = array('seo_module_id'=>'13'), $where_or = array(), $like = array(), $like_or = array(), $order = array(), $start = '', $end = '');
+
+		$data['redirect'] = xss_clean(($this->uri->segment(2) != '') ? $this->uri->segment(2) : ''); 
 				
 		$this->load->view('common/header',$data);
 		$this->load->view('Sign_up_view',$data);

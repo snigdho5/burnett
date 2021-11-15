@@ -118,6 +118,7 @@ $route['product-details'] = 'product_details';
 $route['product-details/:any'] = 'product_details';
 $route['product-details/(:any)/(:any)'] = 'product_details';
 $route['user-registation'] = 'sign_up';
+$route['user-registation/(:any)'] = 'sign_up/index/$1';
 $route['my-account'] = 'my_profile';
 $route['forgotpassword'] = 'forgot_password';
 $route['resetpassword/(:any)'] = 'forgot_password/resetpassword';

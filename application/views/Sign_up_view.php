@@ -9,6 +9,7 @@
                         <label for="name" class="cols-sm-2 control-label">Username or email address <span>*</span></label>
                         <div class="cols-sm-10">
                             <div class="input-group">
+                                <input type="hidden" class="form-control" name="redirect" id="redirect" value="<?php echo $redirect; ?>" />
                                 <input type="text" class="form-control" name="phone_or_email" id="phone_or_email" placeholder="Username or email address" />
                             </div>
                         </div>

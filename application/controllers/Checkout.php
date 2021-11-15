@@ -22,7 +22,7 @@ class Checkout extends CI_Controller
     $user_id = $this->session->userdata('user_session_id');
 
     if ($user_id == '') {
-      redirect(base_url() . 'user-registation', 'refresh');
+      redirect(base_url() . 'user-registation/checkout', 'refresh');
     }
 
     $cart = $this->cart->contents();
