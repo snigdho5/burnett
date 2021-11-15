@@ -767,8 +767,6 @@ class Checkout extends CI_Controller
               );
             } else {
 
-
-
               /*$my_amt=@$chk_amt[0]->wallet_amount;
 
                $new_amt= $my_amt - $grand_total;
@@ -1036,6 +1034,29 @@ class Checkout extends CI_Controller
 
         $product_details =  $this->common_my_model->common($table_name = 'product', $field = array(), $where = array('product_id' => $item['id']), $where_or = array(), $like = array(), $like_or = array(), $order = array(), $start = '', $end = '');
 
+        if (!empty($product_details)) {
+          if ($product_details[0]->product_type == 'variable') {
+            $product_attr_details =  $this->common_my_model->common($table_name = 'product_variable_attribute', $field = array(), $where = array('product_id' => $item['id'], 'product_regular_price' => $item['price']), $where_or = array(), $like = array(), $like_or = array(), $order = array(), $start = '', $end = '');
+
+            if (!empty($product_attr_details)) {
+              $weight = ($product_attr_details[0]->weight != '') ? $product_attr_details[0]->weight : '0.00';
+              $length = ($product_attr_details[0]->length != '') ? $product_attr_details[0]->length : '0.00';
+              $breadth = ($product_attr_details[0]->breadth != '') ? $product_attr_details[0]->breadth : '0.00';
+              $height = ($product_attr_details[0]->height != '') ? $product_attr_details[0]->height : '0.00';
+            } else {
+              $weight = ($product_details[0]->weight != '') ? $product_details[0]->weight : '0.00';
+              $length = ($product_details[0]->length != '') ? $product_details[0]->length : '0.00';
+              $breadth = ($product_details[0]->breadth != '') ? $product_details[0]->breadth : '0.00';
+              $height = ($product_details[0]->height != '') ? $product_details[0]->height : '0.00';
+            }
+          } else {
+            $weight = ($product_details[0]->weight != '') ? $product_details[0]->weight : '0.00';
+            $length = ($product_details[0]->length != '') ? $product_details[0]->length : '0.00';
+            $breadth = ($product_details[0]->breadth != '') ? $product_details[0]->breadth : '0.00';
+            $height = ($product_details[0]->height != '') ? $product_details[0]->height : '0.00';
+          }
+        }
+
 
         $order_details_data = array(
 
@@ -1043,12 +1064,15 @@ class Checkout extends CI_Controller
           'product_id' => $item['id'],
           'quantity' => $item['qty'],
           'price' => $item['price'],
+          'shipping_rate' => $item['shipping_rate'],
+          'weight' => $weight,
+          'length' => $length,
+          'breadth' => $breadth,
+          'height' => $height
 
         );
 
         $this->db->insert('order_detail', $order_details_data);
-
-
 
 
         $product_update_qty_data = array('stock_count' => @$product_details[0]->stock_count - $item['qty']);

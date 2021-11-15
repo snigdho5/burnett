@@ -141,7 +141,7 @@
                 <div class="span4">
 
                   <div class="control-group"><label class="control-label" for="stonegroup_name">Product Weight (in Kg)</label>
-                    <div class="controls"><input type="text" data-validation="required" data-validation-error-msg="Please enter Weight in Kg (e.g. 0.5 / 11)" class="form-control " id="product_weight" value="<?php echo @$edited_details[0]->weight; ?>" name="product_weight" placeholder="Product Weight"></div>
+                    <div class="controls"><input type="number" data-validation="required" data-validation-error-msg="Please enter Weight in Kg (e.g. 0.5 / 11)" class="form-control " id="product_weight" value="<?php echo @$edited_details[0]->weight; ?>" name="product_weight" placeholder="Product Weight"></div>
                     <label class="sell-price-msg"></label>
                   </div>
 
@@ -150,7 +150,7 @@
                 <div class="span4">
 
                   <div class="control-group"><label class="control-label" for="stonegroup_name">Product Length</label>
-                    <div class="controls"><input type="text" data-validation="required" data-validation-error-msg="Please enter Length" class="form-control " id="product_length" value="<?php echo @$edited_details[0]->length; ?>"  name="product_length" placeholder="Product Length"></div>
+                    <div class="controls"><input type="number" data-validation="required" data-validation-error-msg="Please enter Length" class="form-control " id="product_length" value="<?php echo @$edited_details[0]->length; ?>"  name="product_length" placeholder="Product Length"></div>
                   </div>
 
                 </div>
@@ -158,7 +158,7 @@
                 <div class="span4">
 
                   <div class="control-group"><label class="control-label" for="stonegroup_name">Product Breadth</label>
-                    <div class="controls"><input type="text" data-validation="required" data-validation-error-msg="Please enter Breadth" class="form-control " id="product_breadth" value="<?php echo @$edited_details[0]->breadth; ?>"  name="product_breadth" placeholder="Product Breadth"></div>
+                    <div class="controls"><input type="number" data-validation="required" data-validation-error-msg="Please enter Breadth" class="form-control " id="product_breadth" value="<?php echo @$edited_details[0]->breadth; ?>"  name="product_breadth" placeholder="Product Breadth"></div>
                   </div>
 
                 </div>
@@ -166,7 +166,7 @@
                 <div class="span4">
 
                   <div class="control-group"><label class="control-label" for="stonegroup_name">Product Height</label>
-                    <div class="controls"><input type="text" data-validation="required" data-validation-error-msg="Please enter Height" class="form-control " id="product_height" value="<?php echo @$edited_details[0]->height; ?>"  name="product_height" placeholder="Product Height"></div>
+                    <div class="controls"><input type="number" data-validation="required" data-validation-error-msg="Please enter Height" class="form-control " id="product_height" value="<?php echo @$edited_details[0]->height; ?>"  name="product_height" placeholder="Product Height"></div>
                   </div>
 
                 </div>

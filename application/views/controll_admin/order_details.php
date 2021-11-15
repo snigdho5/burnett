@@ -23,79 +23,97 @@
             <?php echo $this->session->flashdata('succ_msg'); ?>
           </div>
         <?php }
-         ?>
+        ?>
 
-<?php 
+        <?php
         // print_obj($myorder);die;
-        if(!empty($myorder)){
+        if (!empty($myorder)) {
 
-         ?>
+        ?>
 
 
-        <div class="span12 stone_details" id="general_details">
-          <div class="widget ">
-            <div class="widget-header "><a class="accordion-toggle" data-toggle="collapse" data-parent="#general_details" href="#general_details_area">&nbsp;</a> <i class="icon-leaf"></i>
-              <h3>Edit-Order (<?= $myorder[0]->order_unique_id ?>)</h3>
-              <div class="pull-right"></div>
-            </div>
-            <div class="widget-content panel-collapse collapse in" id="general_details_area">
-              <form role="form" name="category_form" method="post" action="<?php echo base_url() . BaseAdminURl . '/'; ?>order/update" enctype="multipart/form-data" class="order-detail">
-                <input type="hidden" name="order_id" value="<?= $myorder[0]->order_id ?>" />
-                <input type="hidden" name="order_unique_id" value="<?= $myorder[0]->order_unique_id ?>" />
-                <div class="span4">
-                  <div class="control-group">
-                    <label class="control-label" for="stonegroup_name">Status</label>
-                    <div class="controls">
-                      <select class="form-control order-status" name="order_status">
-                        <!--  <option value="0" <?= $myorder[0]->order_status == '0' || $myorder[0]->payment_status == '0' ? 'selected="selected"' : '' ?>>Failed</option> 
+          <div class="span12 stone_details" id="general_details">
+            <div class="widget ">
+              <div class="widget-header "><a class="accordion-toggle" data-toggle="collapse" data-parent="#general_details" href="#general_details_area">&nbsp;</a> <i class="icon-leaf"></i>
+                <h3>Edit-Order (<?= $myorder[0]->order_unique_id ?>)</h3>
+                <div class="pull-right"></div>
+              </div>
+              <div class="widget-content panel-collapse collapse in" id="general_details_area">
+                <form role="form" name="category_form" method="post" action="<?php echo base_url() . BaseAdminURl . '/'; ?>order/update" enctype="multipart/form-data" class="order-detail">
+                  <input type="hidden" name="order_id" value="<?= $myorder[0]->order_id ?>" />
+                  <input type="hidden" name="order_unique_id" value="<?= $myorder[0]->order_unique_id ?>" />
+                  <div class="span4">
+                    <div class="control-group">
+                      <label class="control-label" for="stonegroup_name">Change Status</label>
+                      <div class="controls">
+                        <select class="form-control order-status" name="order_status">
+                          <!--  <option value="0" <?= $myorder[0]->order_status == '0' || $myorder[0]->payment_status == '0' ? 'selected="selected"' : '' ?>>Failed</option> 
                           <option value="1" <?= $myorder[0]->order_status == '1' && $myorder[0]->payment_status == '1' ? 'selected="selected"' : '' ?>>Processing</option>-->
 
-                        <option value="3" <?= $myorder[0]->order_status == '1' ? 'selected="selected"' : '' ?>>Processing</option>
-                        <option value="2" <?= $myorder[0]->order_status == '2' ? 'selected="selected"' : '' ?>>Ship In Progress</option>
-                        <option value="3" <?= $myorder[0]->order_status == '3' ? 'selected="selected"' : '' ?>>Delivered</option>
-                        <!-- <option value="4" <?= $myorder[0]->order_status == '4' ? 'selected="selected"' : '' ?>>Completed</option> -->
-                        <option value="4" <?= $myorder[0]->order_status == '4' ? 'selected="selected"' : '' ?>>Cancelled</option>
+                          <option value="3" <?= $myorder[0]->order_status == '1' ? 'selected="selected"' : '' ?>>Processing</option>
 
-                      </select>
+                          <?php if ($myorder[0]->order_status != '2') { ?>
+                            <option value="2" <?php echo $myorder[0]->order_status == '2' ? 'selected="selected"' : ''; ?>>Ship In Progress</option>
+                          <?php } ?>
+
+                          <option value="3" <?= $myorder[0]->order_status == '3' ? 'selected="selected"' : '' ?>>Delivered</option>
+                          <!-- <option value="4" <?= $myorder[0]->order_status == '4' ? 'selected="selected"' : '' ?>>Completed</option> -->
+                          <option value="4" <?= $myorder[0]->order_status == '4' ? 'selected="selected"' : '' ?>>Cancelled</option>
+
+                        </select>
+
+                      </div> <!-- /controls -->
+                    </div>
+                  </div>
+
+                  <div class="span4 ML0">
+                    <div class="control-group">
+
+                      <button type="submit" class="btn btn-default">Update</button>
 
                     </div> <!-- /controls -->
                   </div>
-                </div>
-
-                <div class="span4 ML0">
-                  <div class="control-group">
-
-                    <button type="submit" class="btn btn-default">Update</button>
-
-                  </div> <!-- /controls -->
-                </div>
 
 
-                <div class="span4 ship-status-div" style="display: none;">
-                  <div class="control-group">
-                    <label class="control-label">Status</label>
-                    <p class="order-status-msg"></p>
+                  <div class="span4 ship-status-div" style="display: none;">
+                    <div class="control-group">
+                      <label class="control-label">Status</label>
+                      <p class="order-status-msg"></p>
+                    </div>
                   </div>
-                </div>
 
-              </form>
+                </form>
+              </div>
+
+
             </div>
+            <!-- /widget-header -->
 
+            <!-- /widget-content -->
 
           </div>
-          <!-- /widget-header -->
-
-          <!-- /widget-content -->
-
-        </div>
-        <!-- /widget -->
+          <!-- /widget -->
 
       </div>
 
       <div class="span12 stone_details" id="price_details">
         <div class="widget ">
           <div class="" id="cd-login">
-            <small class="font-small">Order Date - <?php echo date('M d,Y', strtotime($myorder[0]->date)); ?></small>
+
+            <small class="font-small"><b>Order Status - </b>
+              <?php
+              if($myorder[0]->order_status == '1') {
+                echo 'Processing';
+              }else if($myorder[0]->order_status == '2') {
+                echo 'Ship In Progress';
+              }else if($myorder[0]->order_status == '3') {
+                echo 'Delivered';
+              }else if($myorder[0]->order_status == '4') {
+                echo 'Cancelled';
+              }
+              ?>
+            </small><br>
+            <small class="font-small"><b>Order Date - </b><?php echo date('M d,Y', strtotime($myorder[0]->date)); ?></small>
             <p style="height:20px;"></p>
 
             <table class="table cart_table">
@@ -104,7 +122,7 @@
                   <th>Product</th>
                   <th class="text-center">Price</th>
                   <th>Quantity</th>
-
+                  <th class="text-center">Shipping</th>
                   <th class="text-center">Total</th>
                   <th> </th>
                 </tr>
@@ -112,34 +130,35 @@
               <tbody>
 
                 <?php $order_details = $this->myaccountmodel->get_order_modules_item($myorder[0]->order_id);
-                // var_dump($order_details);
-                if(!empty($order_details)){
+                // print_obj($order_details);die;
+                if (!empty($order_details)) {
 
-                foreach ($order_details as $inner_dt) {
+                  foreach ($order_details as $inner_dt) {
 
-                  $product_details = $this->common_my_model->common($table_name = 'product', $field = array(), $where = array('product_id' => $inner_dt->product_id), $where_or = array(), $like = array(), $like_or = array(), $order = array(), $start = '', $end = '');
+                    $product_details = $this->common_my_model->common($table_name = 'product', $field = array(), $where = array('product_id' => $inner_dt->product_id), $where_or = array(), $like = array(), $like_or = array(), $order = array(), $start = '', $end = '');
 
                 ?>
-                  <tr>
-                    <td class="col-sm-8 col-md-6">
-                      <div class="media">
-                        <a class="thumbnail pull-left" href="#"> <img style="height: 50px;width: 50px;" class="media-object" src="<?php echo base_url() . 'uploads/product/small/' . $product_details[0]->product_image; ?>" alt="" /> </a>
-                        <div class="media-body">
-                          <h4 class="media-heading"><?php echo $product_details[0]->product_title; ?></h4>
-                          <h5 class="media-heading">Batch No.: <?php echo $product_details[0]->product_batch_no; ?></h5>
-                          <p><?php echo character_limiter($product_details[0]->product_description, 40); ?></p>
-                          <!--<span>Status: </span><span class="text-success"><strong>In Stock</strong></span>-->
+                    <tr>
+                      <td class="col-sm-8 col-md-6">
+                        <div class="media">
+                          <a class="thumbnail pull-left" href="#"> <img style="height: 50px;width: 50px;" class="media-object" src="<?php echo base_url() . 'uploads/product/small/' . $product_details[0]->product_image; ?>" alt="" /> </a>
+                          <div class="media-body">
+                            <h4 class="media-heading"><?php echo $product_details[0]->product_title; ?></h4>
+                            <h5 class="media-heading">Batch No.: <?php echo $product_details[0]->product_batch_no; ?></h5>
+                            <p><?php echo character_limiter($product_details[0]->product_description, 40); ?></p>
+                            <!--<span>Status: </span><span class="text-success"><strong>In Stock</strong></span>-->
+                          </div>
                         </div>
-                      </div>
-                    </td>
-                    <td class="col-sm-1 col-md-1 text-center"><i class="fas fa-<?php echo $myorder[0]->order_currency_sign; ?>-sign"></i> <?= $inner_dt->price ?></td>
-                    <td class="col-sm-1 col-md-1" style="text-align: center"><?= $inner_dt->quantity ?></td>
+                      </td>
+                      <td class="col-sm-1 col-md-1 text-center"><i class="fas fa-<?php echo $myorder[0]->order_currency_sign; ?>-sign"></i> <?= $inner_dt->price ?></td>
+                      <td class="col-sm-1 col-md-1" style="text-align: center"><?= $inner_dt->quantity ?></td>
+                      <td class="col-sm-1 col-md-1" style="text-align: center"><?php echo $inner_dt->shipping_rate; ?></td>
+                      <td class="col-sm-1 col-md-1 text-center"><i class="fas fa-<?php echo $myorder[0]->order_currency_sign; ?>-sign"></i> <?= $inner_dt->price * $inner_dt->quantity ?></td>
 
-                    <td class="col-sm-1 col-md-1 text-center"><i class="fas fa-<?php echo $myorder[0]->order_currency_sign; ?>-sign"></i> <?= $inner_dt->price * $inner_dt->quantity ?></td>
-                  </tr>
+                    </tr>
                 <?php
+                  }
                 }
-              }
                 ?>
               </tbody>
             </table>
@@ -253,13 +272,13 @@
 
       <!-- /widget -->
 
-      <?php 
-    }else{
-      ?>
-       <h3>Order Not found!</h3>
-      <?php
-    }
-         ?>
+    <?php
+        } else {
+    ?>
+      <h3>Order Not found!</h3>
+    <?php
+        }
+    ?>
 
     </div> <!-- /row -->
 

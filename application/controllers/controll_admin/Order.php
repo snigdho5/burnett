@@ -54,7 +54,7 @@ class Order extends CI_Controller
 			if (!empty($myorder) && !empty($order_details)) {
 				$arr['myorder'] = $myorder;
 				$arr['order_details'] = $order_details;
-			}else if (!empty($myorder) && empty($order_details)) {
+			} else if (!empty($myorder) && empty($order_details)) {
 				$arr['myorder'] = $myorder;
 				$arr['order_details'] = '';
 			} else {
@@ -66,7 +66,7 @@ class Order extends CI_Controller
 			$arr['order_details'] = '';
 		}
 
-			// print_obj($myorder);die;	
+		// print_obj($myorder);die;	
 
 		$this->load->view('controll_admin/order_details', $arr);
 	}
@@ -84,78 +84,100 @@ class Order extends CI_Controller
 
 			if (!empty($getOrder)) {
 
+				$order_details = $this->common_my_model->common($table_name = 'order_detail', $field = array(), $where = array('order_id' => $getOrder->order_id), $where_or = array(), $like = array(), $like_or = array(), $order = array(), $start = '', $end = '');
+
+				if (!empty($order_details)) {
+					$order_details = $order_details[0];
+					$weight = $order_details->weight;
+					$length = $order_details->length;
+					$breadth = $order_details->breadth;
+					$height = $order_details->height;
+				} else {
+					$weight = '0.00';
+					$length = '0.00';
+					$breadth = '0.00';
+					$height = '0.00';
+				}
+
+
 				//update
 				if ($nowstatus == '2') {
 
-					//shiprocket starts
-					$billing_address = $getOrder->billing_flat_house_floor_building . ' ' . $getOrder->billing_locality;
-					$shipping_address = $getOrder->shipping_flat_house_floor_building . ' ' . $getOrder->shipping_locality;
-					$postData = array(
-						"order_id" => $getOrder->order_unique_id,
-						"order_date" => $getOrder->date,
-						"pickup_location" => SHIPROCKET_PICKUP_LOCATION,
-						"channel_id" => SHIPROCKET_CHANNEL_ID,
-						"comment" => "Reseller: M/s Burnett",
-						"billing_customer_name" => $getOrder->billing_name,
-						"billing_last_name" => "",
-						"billing_address" => $billing_address,
-						"billing_address_2" => $getOrder->billing_landmark,
-						"billing_city" => $getOrder->billing_city,
-						"billing_pincode" => $getOrder->billing_pincode,
-						"billing_state" => $getOrder->billing_state,
-						"billing_country" => $getOrder->billing_country,
-						"billing_email" => $getOrder->billing_email,
-						"billing_phone" => $getOrder->billing_phone,
-						"shipping_is_billing" => true,
-						"shipping_customer_name" => "",
-						"shipping_last_name" => "",
-						"shipping_address" => $shipping_address,
-						"shipping_address_2" => $getOrder->billing_landmark,
-						"shipping_city" => $getOrder->shipping_city,
-						"shipping_pincode" => $getOrder->shipping_pincode,
-						"shipping_country" => $getOrder->shipping_country,
-						"shipping_state" => $getOrder->shipping_state,
-						"shipping_email" => $getOrder->billing_email,
-						"shipping_phone" => $getOrder->billing_phone,
-						"order_items" => array(
-							array(
-								"name" => $getOrder->billing_name,
-								"sku" => "chakra123",
-								"units" => 10,
-								"selling_price" => $getOrder->order_total_value,
-								"discount" => "",
-								"tax" => "",
-								"hsn" => 441122
-							)
-						),
-						"payment_method" => "Prepaid",
-						"shipping_charges" => 0,
-						"giftwrap_charges" => 0,
-						"transaction_charges" => 0,
-						"total_discount" => 0,
-						"sub_total" => $getOrder->order_total_value,
-						"length" => $getOrder->length,
-						"breadth" => $getOrder->breadth,
-						"height" => $getOrder->height,
-						"weight" => $getOrder->weight,
-					);
+					if ($weight > 0 && $length > 0  && $breadth > 0  && $height > 0) {
+						//shiprocket starts
+						$billing_address = $getOrder->billing_flat_house_floor_building . ' ' . $getOrder->billing_locality;
+						$shipping_address = $getOrder->shipping_flat_house_floor_building . ' ' . $getOrder->shipping_locality;
+						$postData = array(
+							"order_id" => $getOrder->order_unique_id,
+							"order_date" => $getOrder->date,
+							"pickup_location" => SHIPROCKET_PICKUP_LOCATION,
+							"channel_id" => SHIPROCKET_CHANNEL_ID,
+							"comment" => "Reseller: M/s Burnett",
+							"billing_customer_name" => $getOrder->billing_name,
+							"billing_last_name" => "",
+							"billing_address" => $billing_address,
+							"billing_address_2" => $getOrder->billing_landmark,
+							"billing_city" => $getOrder->billing_city,
+							"billing_pincode" => $getOrder->billing_pincode,
+							"billing_state" => $getOrder->billing_state,
+							"billing_country" => $getOrder->billing_country,
+							"billing_email" => $getOrder->billing_email,
+							"billing_phone" => $getOrder->billing_phone,
+							"shipping_is_billing" => true,
+							"shipping_customer_name" => "",
+							"shipping_last_name" => "",
+							"shipping_address" => $shipping_address,
+							"shipping_address_2" => $getOrder->billing_landmark,
+							"shipping_city" => $getOrder->shipping_city,
+							"shipping_pincode" => $getOrder->shipping_pincode,
+							"shipping_country" => $getOrder->shipping_country,
+							"shipping_state" => $getOrder->shipping_state,
+							"shipping_email" => $getOrder->billing_email,
+							"shipping_phone" => $getOrder->billing_phone,
+							"order_items" => array(
+								array(
+									"name" => $getOrder->billing_name,
+									"sku" => "chakra123",
+									"units" => 10,
+									"selling_price" => $getOrder->order_total_value,
+									"discount" => "",
+									"tax" => "",
+									"hsn" => 441122
+								)
+							),
+							"payment_method" => "Prepaid",
+							"shipping_charges" => 0,
+							"giftwrap_charges" => 0,
+							"transaction_charges" => 0,
+							"total_discount" => 0,
+							"sub_total" => $getOrder->order_total_value,
+							"length" => $length,
+							"breadth" => $breadth,
+							"height" => $height,
+							"weight" => $weight,
+						);
 
-					//$data_string = json_encode($postData);
+						// $data_string = json_encode($postData);
 
-					$response = $this->shiprocket->generateOrder($postData);
+						$response = $this->shiprocket->generateOrder($postData);
 
-					// print_obj($response);die;
+						// print_obj($response);die;
 
-					//shiprocket ends
-					$order_status = 2;
-					$payment_status = 'Ship In Progress';
-					$neworder_update = array(
-						'order_status' 	=> $order_status,
-						'payment_status' 	=> $payment_status,
-						'shiprocket_order_id' 	=> $response['order_id'],
-						'shiprocket_shipment_id' 	=> $response['shipment_id'],
-						'shiprocket_status_code' 	=> $response['status_code'],
-					);
+						//shiprocket ends
+						$order_status = 2;
+						$payment_status = 'Ship In Progress';
+						$neworder_update = array(
+							'order_status' 	=> $order_status,
+							'payment_status' 	=> $payment_status,
+							'shiprocket_order_id' 	=> $response['order_id'],
+							'shiprocket_shipment_id' 	=> $response['shipment_id'],
+							'shiprocket_status_code' 	=> $response['status_code'],
+						);
+
+						$this->billing_model->update_order($order_id, $neworder_update);
+					} else {
+						$payment_status = 'Error: Please update product dimensions first!!';
+					}
 				} else if ($nowstatus == '3') {
 					$order_status = 3;
 					$payment_status = 'Paid';
@@ -163,21 +185,24 @@ class Order extends CI_Controller
 						'order_status' 	=> $order_status,
 						'payment_status' 	=> $payment_status
 					);
+
+					$this->billing_model->update_order($order_id, $neworder_update);
 				} else {
 					$order_status = $nowstatus;
 					$neworder_update = array(
 						'order_status' 	=> $order_status
 					);
+					
+					$this->billing_model->update_order($order_id, $neworder_update);
 				}
 
 
 
-				$this->billing_model->update_order($order_id, $neworder_update);
 			}
 		}
 
 
-
+		$this->session->set_flashdata('succ_msg', $payment_status);
 		redirect('controll_admin/order/view_details/' . $this->input->post('order_unique_id'));
 	}
 
