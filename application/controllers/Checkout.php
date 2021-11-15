@@ -107,7 +107,7 @@ class Checkout extends CI_Controller
           <option value="Office">Office</option>
         </select>
       </div>
-      <div class="row">
+      <div class="row"> 
         <div class="col-md-5 mb-3">
           <label for="country">Country</label>
           <select class="custom-select d-block w-100" id="ship_country" name="ship_country">
