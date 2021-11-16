@@ -102,13 +102,13 @@
 
             <small class="font-small"><b>Order Status - </b>
               <?php
-              if($myorder[0]->order_status == '1') {
+              if ($myorder[0]->order_status == '1') {
                 echo 'Processing';
-              }else if($myorder[0]->order_status == '2') {
+              } else if ($myorder[0]->order_status == '2') {
                 echo 'Ship In Progress';
-              }else if($myorder[0]->order_status == '3') {
+              } else if ($myorder[0]->order_status == '3') {
                 echo 'Delivered';
-              }else if($myorder[0]->order_status == '4') {
+              } else if ($myorder[0]->order_status == '4') {
                 echo 'Cancelled';
               }
               ?>
@@ -227,8 +227,8 @@
                 <h6>Billing Address</h6>
                 <div class="default-not-set-border">
                   <!--  <div class="address-middle">
-                                                  <i class="fas fa-user"></i><?php echo $billing_details[0]->name; ?><br>
-                                                  <i class="fas fa-envelope"></i><?php echo $billing_details[0]->email; ?><br>
+                        <i class="fas fa-user"></i><?php echo $billing_details[0]->name; ?><br>
+                        <i class="fas fa-envelope"></i><?php echo $billing_details[0]->email; ?><br>
                                                   <i class="fas fa-phone"></i><?php echo $billing_details[0]->phone; ?><br>
                                                   <i class="fas fa-map-marker"></i><?= $billing_details[0]->flat_house_floor_building ?>, <?= $billing_details[0]->city ?> - <?= $billing_details[0]->pincode ?><br><?= $billing_details[0]->state ?> ,<?= $billing_details[0]->country ?>
                                                  <br /> Locality : <?= $billing_details[0]->locality ?>
