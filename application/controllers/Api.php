@@ -957,12 +957,12 @@ class Api extends CI_Controller
 		header('Content-Type: application/json');
 		header('Access-Control-Allow-Origin: *');
 
-		
+
 		$blog_id   = xss_clean(($this->input->get('blog_id') != '') ? $this->input->get('blog_id') : ''); //uid
 
 		if ($blog_id != '') {
-			$blogs =  $this->common_my_model->common($table_name = 'blog', $field = array(), $where = array('status' => '1', 'blog_id'=>$blog_id), $where_or = array(), $like = array(), $like_or = array(), $order = array(), $start = '', $end = '');
-		}else{
+			$blogs =  $this->common_my_model->common($table_name = 'blog', $field = array(), $where = array('status' => '1', 'blog_id' => $blog_id), $where_or = array(), $like = array(), $like_or = array(), $order = array(), $start = '', $end = '');
+		} else {
 			$blogs =  $this->common_my_model->common($table_name = 'blog', $field = array(), $where = array('status' => '1'), $where_or = array(), $like = array(), $like_or = array(), $order = array(), $start = '', $end = '');
 		}
 
@@ -970,18 +970,27 @@ class Api extends CI_Controller
 
 		if (!empty($blogs)) {
 
-			// foreach ($blogs as $key => $value) {
-			// 	$resp[] = array(
-			// 		'blog_id' => $value['blog_id']
-			// 	);
-			// }
+			foreach ($blogs as $key => $value) {
+				$resp[] = array(
+					'blog_id' => $value->blog_id,
+					'blog_title' => $value->blog_title,
+					'blog_slug' => $value->blog_slug,
+					'category_id' => $value->category_id,
+					'image' => ($value->image != '') ? base_url() . 'uploads/blog/' . $value->image : '',
+					'meta_title' => $value->meta_title,
+					'meta_keyword' => $value->meta_keyword,
+					'meta_description' => $value->meta_description,
+					'added_date' => $value->added_date,
+					'status' => $value->status
+				);
+			}
 
 			if ($blog_id != '') {
-				$data['respData'] = $blogs[0];
-			}else{
-				$data['respData'] = $blogs;
+				$data['respData'] = $resp[0];
+			} else {
+				$data['respData'] = $resp;
 			}
-			
+
 			$data['code'] = '200';
 			$data['status'] = 'success';
 			$data['message'] = 'Data Found!';
@@ -990,7 +999,7 @@ class Api extends CI_Controller
 			$data['status'] = 'failed';
 			$data['message'] = 'Data not found!';
 		}
-		
+
 
 		$json = json_encode($data);
 		echo $json;
