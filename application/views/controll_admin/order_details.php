@@ -40,13 +40,14 @@
               </div>
               <div class="widget-content panel-collapse collapse in" id="general_details_area">
                 <form role="form" name="category_form" method="post" action="<?php echo base_url() . BaseAdminURl . '/'; ?>order/update" enctype="multipart/form-data" class="order-detail">
-                  <input type="hidden" name="order_id" value="<?= $myorder[0]->order_id ?>" />
+                  <input type="hidden" name="order_id" id="order_id" value="<?= $myorder[0]->order_id ?>" />
                   <input type="hidden" name="order_unique_id" value="<?= $myorder[0]->order_unique_id ?>" />
                   <div class="span4">
                     <div class="control-group">
                       <label class="control-label" for="stonegroup_name">Change Status</label>
                       <div class="controls">
-                        <select class="form-control order-status" name="order_status">
+                        <select class="form-control order-status" name="order_status" required>
+                        <option value="" >Select</option>
                           <!--  <option value="0" <?= $myorder[0]->order_status == '0' || $myorder[0]->payment_status == '0' ? 'selected="selected"' : '' ?>>Failed</option> 
                           <option value="1" <?= $myorder[0]->order_status == '1' && $myorder[0]->payment_status == '1' ? 'selected="selected"' : '' ?>>Processing</option>-->
 
@@ -114,6 +115,18 @@
               ?>
             </small><br>
             <small class="font-small"><b>Order Date - </b><?php echo date('M d,Y', strtotime($myorder[0]->date)); ?></small>
+            <p style="height:20px;"></p>
+
+            <?php
+            if ($myorder[0]->order_status == '2') {
+            ?>
+              <input class="form-control awbno" name="awbno" placeholder="Enter AWB" />
+              <button type="button" class="btn btn-default update-awbno">Update AWB</button>
+              <p class="awb-msg" style="display: none;"></p>
+            <?php
+            }
+            ?>
+
             <p style="height:20px;"></p>
 
             <table class="table cart_table">
@@ -310,5 +323,46 @@
       // $('.product-sell-price').val('0');
       // $('.btn-submit').prop('disabled', true);
     }
+  });
+
+  $('body').on('click', '.update-awbno', function() {
+    var awbno = $('.awbno').val();
+    var order_id = $('#order_id').val();
+    $('.awb-msg').hide();
+    $('.awb-msg').html('');
+
+    if (awbno != '') {
+      $.ajax({
+        type: "POST",
+        dataType: 'html',
+        url: "<?php echo base_url(); ?>controll_admin/order/update_awbno",
+        data: {
+          awbno: awbno,
+          order_id: order_id
+        },
+        // async:false,
+
+        success: function(data) {
+          var data = $.parseJSON(data);
+          if (data.status == 'success') {
+            $('.awb-msg').show();
+            $('.awb-msg').html(data.msg);
+            $('.awb-msg').css('color', 'green');
+          } else {
+            $('.awb-msg').show();
+            $('.awb-msg').html(data.msg);
+            $('.awb-msg').css('color', 'red');
+          }
+
+        }
+      });
+    } else {
+      $('.awb-msg').show();
+      $('.awb-msg').html('Please enter AWB no to update!');
+      $('.awb-msg').css('color', 'red');
+    }
+
+
+
   });
 </script>

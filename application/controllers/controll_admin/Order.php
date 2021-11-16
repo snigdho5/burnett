@@ -192,18 +192,53 @@ class Order extends CI_Controller
 					$neworder_update = array(
 						'order_status' 	=> $order_status
 					);
-					
+
 					$this->billing_model->update_order($order_id, $neworder_update);
 				}
-
-
-
 			}
 		}
 
 
 		$this->session->set_flashdata('succ_msg', $payment_status);
 		redirect('controll_admin/order/view_details/' . $this->input->post('order_unique_id'));
+	}
+
+
+	public function update_awbno()
+	{
+		$order_id = $this->input->post('order_id');
+		$awbno = $this->input->post('awbno');
+
+		if ($order_id != '' && $awbno != '') {
+
+			$getOrder = $this->billing_model->get_orderN(array('order_id' => $order_id));
+
+			// print_obj($getOrder);die;
+
+			if (!empty($getOrder)) {
+
+				$neworder_update = array(
+					'awbno' 	=> $awbno,
+					'awb_dtime' 	=> DTIME
+				);
+
+				$updated = $this->billing_model->update_order($order_id, $neworder_update);
+
+				$return['status'] = 'success';
+				$return['msg'] = 'Success: Successfully updated!';
+			} else {
+				$return['status'] = 'failure';
+				$return['msg'] = 'Error: Order Not found!';
+			}
+		} else {
+			$return['status'] = 'failure';
+			$return['msg'] = 'Error: Validation failure!';
+		}
+
+		header('Content-Type: application/json');
+		header('Access-Control-Allow-Origin: *');
+
+		echo json_encode($return);
 	}
 
 	public function delete($id)
