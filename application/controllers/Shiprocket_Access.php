@@ -26,15 +26,17 @@ class Shiprocket_Access extends CI_Controller
             $cod = xss_clean($this->input->post('cod_val'));
             $weight = xss_clean($this->input->post('weight'));
 
+            
+
             if ($pincode != '') {
                 // invoke shiprocket api
-                $cod = ($cod != '')?$cod:0;
+                $cod = ($cod != '') ? $cod : 0;
 
                 $postData = array(
                     'pickup_postcode' => SHIPROCKET_PICKUP_PIN,
                     'delivery_postcode' => $pincode,
                     'cod' => $cod,
-                    'weight' => $weight//gms
+                    'weight' => $weight //gms
                 );
 
                 $shipState = $this->shiprocket->serviceability($postData);
@@ -44,7 +46,7 @@ class Shiprocket_Access extends CI_Controller
                 //log pincode data
                 $ip = $this->input->ip_address();
                 $addData = array(
-                    'pickup_postcode' => '700001',
+                    'pickup_postcode' => SHIPROCKET_PICKUP_PIN,
                     'delivery_postcode' => $pincode,
                     'cod' => $cod,
                     'weight' => $weight,
@@ -63,7 +65,11 @@ class Shiprocket_Access extends CI_Controller
                         $count_couriers = count($availableCourierCompanies);
                         $html = '<option value="">Select</option>';
                         foreach ($availableCourierCompanies as $key => $value) {
-                            $html .= '<option value="'.$value['courier_company_id'].'" data-rate="'.$value['rate'].'">'.$value['courier_name'].' [ETA: '.$value['etd'].', Rs.: '.$value['rate'].']</option>';
+                            if ($key == 0) {
+                                $html .= '<option value="' . $value['courier_company_id'] . '" data-rate="' . $value['rate'] . '" selected>' . $value['courier_name'] . ' [ETA: ' . $value['etd'] . ', Rs.: ' . $value['rate'] . ']</option>';
+                            } else {
+                                $html .= '<option value="' . $value['courier_company_id'] . '" data-rate="' . $value['rate'] . '">' . $value['courier_name'] . ' [ETA: ' . $value['etd'] . ', Rs.: ' . $value['rate'] . ']</option>';
+                            }
                         }
                         // print_obj($availableCourierCompanies);die;
                         $return['couriers_count'] = $count_couriers;

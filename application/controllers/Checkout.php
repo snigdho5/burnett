@@ -367,11 +367,11 @@ class Checkout extends CI_Controller
       // exit;
 
       // shiprocket
-      $post['pickup_postcode'] = SHIPROCKET_PICKUP_PIN;
-      $post['delivery_postcode'] = $pincode;
-      $post['cod'] = 0;
-      $post['weight'] = '0.5';
-      $shipState = $this->shiprocket->serviceability($post);
+      // $post['pickup_postcode'] = SHIPROCKET_PICKUP_PIN;
+      // $post['delivery_postcode'] = $pincode;
+      // $post['cod'] = 0;
+      // $post['weight'] = '0.5';
+      // $shipState = $this->shiprocket->serviceability($post);
 
       // print_obj($shipState);die;
 
@@ -457,11 +457,13 @@ class Checkout extends CI_Controller
       $shipping_cost = 0;
 
       foreach ($order_cart as $k => $item) {
-        $curr_subtotal = ($item['price'] * $item['qty']) + $item['shipping_rate'];
+        $shipping_rate = $item['shipping_rate'];
+        $curr_subtotal = ($item['price'] * $item['qty']);
         // echo number_format($curr_subtotal, 2);
         $grand_total = $grand_total + $curr_subtotal;
       }
 
+      $grand_total = $grand_total + $shipping_rate;
 
       /*----- User Discount --------*/
 
@@ -2070,8 +2072,8 @@ class Checkout extends CI_Controller
 
         $curr_subtotal = $item['price'] * $item['qty'];
         // echo number_format($curr_subtotal, 2);
-        $shipping_cost += $item['shipping_rate'];
-        $grand_total = $grand_total + $curr_subtotal + $shipping_cost;
+        $shipping_cost = $item['shipping_rate'];
+        $grand_total = $grand_total + $curr_subtotal;
 
 
       ?>
@@ -2082,15 +2084,19 @@ class Checkout extends CI_Controller
           <span class="text-muted"><i class="fa fa-inr" aria-hidden="true"></i> <?php echo number_format(@$item['price'], 2); ?></span>
         </li>
 
-        <li class="list-group-item d-flex justify-content-between lh-condensed">
-          <div>
-            <h6 class="my-0">Shipping Cost</h6>
-          </div>
-          <span class="text-muted"><i class="fa fa-inr" aria-hidden="true"></i> <?php echo number_format(@$item['shipping_rate'], 2); ?></span>
-        </li>
+
       <?php
-        $shipping_cost = 0;
-      } ?>
+        // $shipping_cost = 0;
+      } 
+       $grand_total = $grand_total + $shipping_cost;
+      ?>
+
+      <li class="list-group-item d-flex justify-content-between lh-condensed">
+        <div>
+          <h6 class="my-0">Shipping Cost</h6>
+        </div>
+        <span class="text-muted"><i class="fa fa-inr" aria-hidden="true"></i> <?php echo number_format($shipping_cost, 2); ?></span>
+      </li>
 
       <!--  <li class="list-group-item d-flex justify-content-between lh-condensed">
               <div>

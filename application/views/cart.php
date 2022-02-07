@@ -48,6 +48,7 @@ $cart = $this->cart->contents();
                                 $sgst_total = 0;
                                 $shipping_cost = 0;
                                 $count_cart = 0;
+                                $weight = '0';
                                 foreach ($cart as $k => $item) :
                                     if ($this->product_model->is_product($item['id']) > 0) {
                                         $count_cart++;
@@ -79,53 +80,24 @@ $cart = $this->cart->contents();
                                                 $curr_subtotal = $item['price'] * $item['qty'];
                                                 echo number_format($curr_subtotal, 2);
                                                 $grand_total = $grand_total + $curr_subtotal;
-                                                ?>
-                                            </td>
-                                            <td class="text-right">
-                                                <div class="row">
-                                                    <div class="col-md-3">
-                                                        <label for="pincode">Check Availability</label>
-                                                        <input type="hidden" name="redirect" value="" class="redirect" id="redirect">
-                                                        <input type="hidden" id="cod-val-<?php echo $k; ?>" class="cod-val" name="cart[<?php echo $item['rowid'] ?>][cod_val]" value="0">
-                                                        <input type="hidden" id="p-weight-<?php echo $k; ?>" class="p-weight weight-var" name="cart[<?php echo $item['rowid'] ?>][weight]" value="<?php echo ($product_details[0]->weight != '') ? $product_details[0]->weight : '0.3'; ?>">
-                                                        <input type="hidden" id="shipping_rate<?php echo $k; ?>" name="cart[<?php echo $item['rowid'] ?>][shipping_rate]" class="form-control shipping_rate" placeholder="" value="<?php echo ($item['shipping_rate'] != '') ? $item['shipping_rate'] : ''; ?>">
-                                                        <input type="text" id="user-pincode-<?php echo $k; ?>" name="cart[<?php echo $item['rowid'] ?>][user_pincode]" class="form-control user-pincode" placeholder="Enter Pincode.." value="">
-                                                    </div>
-                                                    <div class="col-md-1">
-                                                        <label for="pincode">Online</label>
-                                                        <input type="radio" class="form-control is-cod" id="is-cod-<?php echo $k; ?>" name="is_cod_<?php echo $k; ?>" placeholder="Enter Pincode.." value="0" checked>
-                                                    </div>
-                                                    <div class="col-md-1">
-                                                        <label for="pincode">COD</label>
-                                                        <input type="radio" class="form-control is-cod" id="is-cod-<?php echo $k; ?>" name="is_cod_<?php echo $k; ?>" placeholder="Enter Pincode.." value="1">
-                                                    </div>
-                                                    <div class="col-md-2">
-                                                        <label for="pin"> </label>
-                                                        <button type="button" class="round-black-btn btn-check-pincode" id="btn-check-pincode-<?php echo $k; ?>" data-id="<?php echo $k; ?>">Check</button>
-                                                    </div>
-                                                    <div class="col-md-5">
-                                                        <label for="pin"> </label>
-                                                        <p class="pin-checker-msg<?php echo $k; ?>"></p>
-                                                        <p class="couriers-msg<?php echo $k; ?>"></p>
-                                                        <p class="delivery-company-p<?php echo $k; ?>" style="display: none;">
-                                                            <select id="delivery_company_<?php echo $k; ?>" name="delivery_company<?php echo $k; ?>" class="form-control delivery-company" data-sid="<?php echo $k; ?>">
 
-                                                            </select>
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                                <i class="fa fa-inr" aria-hidden="true"></i>
-                                                <?php
-                                                $shiprate = 0;
-                                                if ($item['shipping_rate'] == '') {
-                                                    echo number_format($shiprate, 2);
-                                                } else if ($item['shipping_rate'] != '') {
-                                                    $shipping_cost += $item['shipping_rate'];
-                                                    echo number_format($item['shipping_rate'], 2);
-                                                }
+                                                $weight += ($product_details[0]->weight != '') ? $product_details[0]->weight : '0.3';
                                                 ?>
 
+                                                <input type="hidden" id="p-weight-<?php echo $k; ?>" class="" name="cart[<?php echo $item['rowid'] ?>][weight]" value="<?php echo ($product_details[0]->weight != '') ? $product_details[0]->weight : '0.3'; ?>">
+
+                                                <input type="hidden" id="shipping_rate<?php echo $k; ?>" name="cart[<?php echo $item['rowid'] ?>][shipping_rate]" class="form-control shipping_rate" placeholder="" value="<?php echo ($item['shipping_rate'] != '') ? $item['shipping_rate'] : ''; ?>">
                                             </td>
+
+                                            <?php
+                                            $shiprate = 0;
+                                            if ($item['shipping_rate'] == '') {
+                                                //echo number_format($shiprate, 2);
+                                            } else if ($item['shipping_rate'] != '') {
+                                                $shipping_cost = $item['shipping_rate'];
+                                                //echo number_format($item['shipping_rate'], 2);
+                                            }
+                                            ?>
                                             <td class="text-right"><a href="<?php echo base_url() ?>cart/remove/<?= $item['rowid'] ?>" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a></td>
                                         </tr>
                                 <?php
@@ -136,6 +108,47 @@ $cart = $this->cart->contents();
                                 endforeach;
                                 ?>
 
+                                <tr>
+                                    <td colspan="4" class="text-right">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <label for="pincode">Check Availability</label>
+                                                <input type="hidden" class="cod-val" name="cod_val" value="0">
+                                                <!-- <input type="hidden" class="p-weight weight-var" name="weight" value="0"> -->
+                                                <input type="text" class="form-control user-pincode" placeholder="Enter Pincode.." value="">
+                                            </div>
+                                            <div class="col-md-1">
+                                                <label for="pincode">Online</label>
+                                                <input type="radio" class="form-control is-cod" name="is_cod" placeholder="Enter Pincode.." value="0" checked>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <label for="pincode">COD</label>
+                                                <input type="radio" class="form-control is-cod" name="is_cod" placeholder="Enter Pincode.." value="1">
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="pin"> </label>
+                                                <button type="button" class="round-black-btn btn-check-pincode">Check</button>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <label for="pin"> </label>
+                                                <p class="pin-checker-msg"></p>
+                                                <p class="couriers-msg"></p>
+                                                <p class="delivery-company-p" style="display: none;">
+                                                    <select id="delivery_company" name="delivery_company" class="form-control delivery-company">
+
+                                                    </select>
+                                                </p>
+                                            </div>
+                                        </div>
+
+
+                                    </td>
+                                </tr>
+
+                                <input type="hidden" class="p-weight weight-var" name="total_weight" value="<?php echo $weight; ?>">
+
+                                <input type="hidden" name="redirect" value="" class="redirect" id="redirect">
+                                <input type="hidden" id="shipping_rate" name="shipping_rate" class="form-control shipping_rate" placeholder="" value="<?php echo $shipping_cost; ?>">
                                 <input type="hidden" id="count-cart" name="count_cart" value="<?php echo $count_cart; ?>">
                                 <input type="hidden" id="shipping-rate-comma" name="shipping_rate_comma" value="">
 
@@ -226,18 +239,21 @@ $cart = $this->cart->contents();
         $("#btnupdatecart").on("click", function() {
             $("#cart-msg").hide();
             var shipcost = $('.ship-cost').attr('data-shipcost');
-            var ship_comma = $('#shipping-rate-comma').val();
-            var count_cart = $('#count-cart').val();
-            var ship_comma_count = ship_comma.split(",").length - 1;
+            var shipping_rate = $('#shipping_rate').val();
+            // var ship_comma = $('#shipping-rate-comma').val();
+            // var count_cart = $('#count-cart').val();
+            // var ship_comma_count = ship_comma.split(",").length - 1;
             // console.log(ship_comma_count);
 
-            if (shipcost > 0) {
+            if (shipcost > 0 || shipping_rate > 0) {
                 $('#redirect').val('cart');
                 $("#frmupdatecart").submit();
-            } else if (count_cart == ship_comma_count) {
-                $('#redirect').val('cart');
-                $("#frmupdatecart").submit();
-            } else {
+            }
+            // else if (count_cart == ship_comma_count) {
+            //     $('#redirect').val('cart');
+            //     $("#frmupdatecart").submit();
+            // }
+            else {
                 $("#cart-msg").show();
                 $("#cart-msg").html('<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Please select shipping to proceed!');
                 $("#cart-msg").css("color", "red");
@@ -273,16 +289,22 @@ $cart = $this->cart->contents();
         $("#cart-msg").hide();
         var shipcost = $('.ship-cost').attr('data-shipcost');
         var ship_comma = $('#shipping-rate-comma').val();
-        var count_cart = $('#count-cart').val();
-        var ship_comma_count = ship_comma.split(",").length - 1;
+        var shipping_rate = $('#shipping_rate').val();
+        // var count_cart = $('#count-cart').val();
+        // var ship_comma_count = ship_comma.split(",").length - 1;
 
-        if (shipcost > 0) {
+        // console.log('shipping_rate' + shipping_rate);
+
+
+        if (shipcost > 0 || shipping_rate > 0) {
             $('#redirect').val('checkout');
             $("#frmupdatecart").submit();
-        } else if (count_cart == ship_comma_count) {
-            $('#redirect').val('checkout');
-            $("#frmupdatecart").submit();
-        } else {
+        }
+        //  else if (count_cart == ship_comma_count) {
+        //     $('#redirect').val('checkout');
+        //     $("#frmupdatecart").submit();
+        // } 
+        else {
             $("#cart-msg").show();
             $("#cart-msg").html('<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Please select shipping to proceed!');
             $("#cart-msg").css("color", "red");
@@ -291,91 +313,175 @@ $cart = $this->cart->contents();
 
     }
 
-    $('body').on('change', '.delivery-company', function() {
-        var rate = $(this).find(':selected').attr('data-rate');
-        var id = $(this).attr('data-sid');
-        // console.log('rate'+rate + 'id'+id);
-        $('#shipping_rate' + id).val(rate);
 
-        var ship_comma = $('#shipping-rate-comma').val();
-        // if (ship_comma != '') {
-        $('#shipping-rate-comma').val(ship_comma + ',' + rate);
-        // } else {
-        //     $('#shipping-rate-comma').val(rate);
-        // }
+    $(document).ready(function() {
 
-    });
+        $('body').on('change', '.delivery-company', function() {
+            var rate = $(this).find(':selected').attr('data-rate');
+            // console.log('rate'+rate + 'id'+id);
+            $('#shipping_rate').val(rate);
 
-    $('body').on('click', '.btn-check-pincode', function() {
-        var id = $(this).attr('data-id');
-        var numberRegex = /^[+-]?\d+(\.\d+)?([eE][+-]?\d+)?$/;
-        var user_pincode = $('#user-pincode-' + id).val();
-        var productid = $('.product-id' + id).val();
-        var product_nm = $('.product-nm' + id).val();
-        var cod_val = $('#cod-val-' + id).val();
-        var weight = $('#p-weight-' + id).val();
+            var ship_comma = $('#shipping-rate-comma').val();
+            // if (ship_comma != '') {
+            $('#shipping-rate-comma').val(ship_comma + ',' + rate);
+            // } else {
+            //     $('#shipping-rate-comma').val(rate);
+            // }
 
-        pinlen = user_pincode.length;
+        });
 
-        // console.log(user_pincode);
-        $('.pin-checker-msg' + id).hide();
-        $('.couriers-msg' + id).hide();
-        $('.delivery-company-p' + id).hide();
-        $('.cart-btns' + id).hide();
-        $('.btn-check-pincode' + id).prop('disabled', true);
+        $('body').on('click', '.btn-check-pincode', function() {
+            var numberRegex = /^[+-]?\d+(\.\d+)?([eE][+-]?\d+)?$/;
+            var user_pincode = $('.user-pincode').val();
+            var productid = $('.product-id').val();
+            var product_nm = $('.product-nm').val();
+            var cod_val = $('.cod-val').val();
+            var weight = $('.p-weight').val();
+
+            pinlen = user_pincode.length;
+
+            // console.log(user_pincode);
+            // console.log(productid);
+            // console.log(product_nm);
+            // console.log(cod_val);
+            // console.log(weight);
+            $('.pin-checker-msg').hide();
+            $('.couriers-msg').hide();
+            $('.delivery-company-p').hide();
+            // $('.cart-btns').hide();
+            $('.btn-check-pincode').prop('disabled', true);
 
 
-        if (user_pincode != '' && numberRegex.test(user_pincode) && pinlen == 6 && productid != '' && product_nm != '' && cod_val != '') {
+            if (user_pincode != '' && numberRegex.test(user_pincode) && pinlen == 6 && productid != '' && product_nm != '' && cod_val != '') {
 
-            if (weight != '') {
-                $('.pin-checker-msg' + id).show();
-                $('.btn-check-pincode' + id).prop('disabled', true);
-                $('.pin-checker-msg' + id).html('<i class="fa fa-spinner fa-spin" style="font-size:24px"></i>');
-                $.ajax({
-                    type: 'POST',
-                    url: '<?php echo base_url(); ?>check-pincode',
-                    data: {
-                        user_pincode: user_pincode,
-                        productid: productid,
-                        product_nm: product_nm,
-                        cod_val: cod_val,
-                        weight: weight
-                    },
+                if (weight != '') {
+                    $('.pin-checker-msg').show();
+                    $('.btn-check-pincode').prop('disabled', true);
+                    $('.pin-checker-msg').html('<i class="fa fa-spinner fa-spin" style="font-size:24px"></i>');
+                    $.ajax({
+                        type: 'POST',
+                        url: '<?php echo base_url(); ?>check-pincode',
+                        data: {
+                            user_pincode: user_pincode,
+                            productid: productid,
+                            product_nm: product_nm,
+                            cod_val: cod_val,
+                            weight: weight
+                        },
 
-                    success: function(resp) {
+                        success: function(resp) {
 
-                        if (resp.success == "1") {
+                            if (resp.success == "1") {
 
-                            $('.pin-checker-msg' + id).html('<b style=""><i class="fa fa-check-circle" aria-hidden="true" style="color:green; font-size:20px;"></i>  ' + resp.message + '</b>');
-                            $('.couriers-msg' + id).show();
-                            $('.couriers-msg' + id).html('<b style=""><i class="fa fa-plane" aria-hidden="true" style="color:green; font-size:20px;"></i>  Available Couriers: ' + resp.couriers_count + '</b>');
-                            $('.delivery-company-p' + id).show();
-                            $('.cart-btns' + id).show();
-                            $('#delivery_company_' + id).html(resp.courier_options);
+                                $('.pin-checker-msg').html('<b style=""><i class="fa fa-check-circle" aria-hidden="true" style="color:green; font-size:20px;"></i>  ' + resp.message + '</b>');
+                                $('.couriers-msg').show();
+                                $('.couriers-msg').html('<b style=""><i class="fa fa-plane" aria-hidden="true" style="color:green; font-size:20px;"></i>  Available Couriers: ' + resp.couriers_count + '</b>');
+                                $('.delivery-company-p').show();
+                                $('.cart-btns').show();
+                                $('.delivery-company').html(resp.courier_options);
 
-                        } else if (resp.success == "0") {
 
-                            $('.pin-checker-msg' + id).html('<b style=""><i class="fa fa-times-circle-o" aria-hidden="true" style="color:red; font-size:20px;"></i> ' + resp.message + '</b>');
+                                var rate = $('.delivery-company').find(':selected').attr('data-rate');
+                                // console.log('rate'+rate + 'id'+id);
+                                $('#shipping_rate').val(rate);
 
-                        } else {
+                            } else if (resp.success == "0") {
 
-                            //window.location.href=resp.redirect;
+                                $('.pin-checker-msg').html('<b style=""><i class="fa fa-times-circle-o" aria-hidden="true" style="color:red; font-size:20px;"></i> ' + resp.message + '</b>');
+
+                            } else {
+
+                                //window.location.href=resp.redirect;
+                            }
+
                         }
+                    });
+                    $('.btn-check-pincode').prop('disabled', false);
+                } else {
+                    $('.pin-checker-msg').show();
+                    $('.pin-checker-msg').html('<b style=""><i class="fa fa-times-circle-o" aria-hidden="true" style="color:red; font-size:20px;"></i> Product weight not found!</b>');
+                    $('.btn-check-pincode').prop('disabled', false);
+                }
+            } else {
+                $('.pin-checker-msg').show();
+                $('.pin-checker-msg').html('<b style=""><i class="fa fa-times-circle-o" aria-hidden="true" style="color:red; font-size:20px;"></i> Please enter 6 digit Pincode!</b>');
+                $('.btn-check-pincode').prop('disabled', false);
+            }
 
-                    }
-                });
-                $('.btn-check-pincode' + id).prop('disabled', false);
+
+        });
+
+        $('body').on('click', '.btn-check-pincode2', function() {
+            var id = $(this).attr('data-id');
+            var numberRegex = /^[+-]?\d+(\.\d+)?([eE][+-]?\d+)?$/;
+            var user_pincode = $('#user-pincode-' + id).val();
+            var productid = $('.product-id' + id).val();
+            var product_nm = $('.product-nm' + id).val();
+            var cod_val = $('#cod-val-' + id).val();
+            var weight = $('#p-weight-' + id).val();
+
+            pinlen = user_pincode.length;
+
+            // console.log(user_pincode);
+            $('.pin-checker-msg' + id).hide();
+            $('.couriers-msg' + id).hide();
+            $('.delivery-company-p' + id).hide();
+            $('.cart-btns' + id).hide();
+            $('.btn-check-pincode' + id).prop('disabled', true);
+
+
+            if (user_pincode != '' && numberRegex.test(user_pincode) && pinlen == 6 && productid != '' && product_nm != '' && cod_val != '') {
+
+                if (weight != '') {
+                    $('.pin-checker-msg' + id).show();
+                    $('.btn-check-pincode' + id).prop('disabled', true);
+                    $('.pin-checker-msg' + id).html('<i class="fa fa-spinner fa-spin" style="font-size:24px"></i>');
+                    $.ajax({
+                        type: 'POST',
+                        url: '<?php echo base_url(); ?>check-pincode',
+                        data: {
+                            user_pincode: user_pincode,
+                            productid: productid,
+                            product_nm: product_nm,
+                            cod_val: cod_val,
+                            weight: weight
+                        },
+
+                        success: function(resp) {
+
+                            if (resp.success == "1") {
+
+                                $('.pin-checker-msg' + id).html('<b style=""><i class="fa fa-check-circle" aria-hidden="true" style="color:green; font-size:20px;"></i>  ' + resp.message + '</b>');
+                                $('.couriers-msg' + id).show();
+                                $('.couriers-msg' + id).html('<b style=""><i class="fa fa-plane" aria-hidden="true" style="color:green; font-size:20px;"></i>  Available Couriers: ' + resp.couriers_count + '</b>');
+                                $('.delivery-company-p' + id).show();
+                                $('.cart-btns' + id).show();
+                                $('#delivery_company_' + id).html(resp.courier_options);
+
+                            } else if (resp.success == "0") {
+
+                                $('.pin-checker-msg' + id).html('<b style=""><i class="fa fa-times-circle-o" aria-hidden="true" style="color:red; font-size:20px;"></i> ' + resp.message + '</b>');
+
+                            } else {
+
+                                //window.location.href=resp.redirect;
+                            }
+
+                        }
+                    });
+                    $('.btn-check-pincode' + id).prop('disabled', false);
+                } else {
+                    $('.pin-checker-msg' + id).show();
+                    $('.pin-checker-msg' + id).html('<b style=""><i class="fa fa-times-circle-o" aria-hidden="true" style="color:red; font-size:20px;"></i> Product weight not found!</b>');
+                    $('.btn-check-pincode' + id).prop('disabled', false);
+                }
             } else {
                 $('.pin-checker-msg' + id).show();
-                $('.pin-checker-msg' + id).html('<b style=""><i class="fa fa-times-circle-o" aria-hidden="true" style="color:red; font-size:20px;"></i> Product weight not found!</b>');
+                $('.pin-checker-msg' + id).html('<b style=""><i class="fa fa-times-circle-o" aria-hidden="true" style="color:red; font-size:20px;"></i> Please enter 6 digit Pincode!</b>');
                 $('.btn-check-pincode' + id).prop('disabled', false);
             }
-        } else {
-            $('.pin-checker-msg' + id).show();
-            $('.pin-checker-msg' + id).html('<b style=""><i class="fa fa-times-circle-o" aria-hidden="true" style="color:red; font-size:20px;"></i> Please enter 6 digit Pincode!</b>');
-            $('.btn-check-pincode' + id).prop('disabled', false);
-        }
 
 
+        });
     });
 </script>

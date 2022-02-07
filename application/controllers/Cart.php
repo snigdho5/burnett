@@ -249,13 +249,14 @@ class Cart extends CI_Controller
 	{
 		$cart_info =  $_POST['cart'];
 		$redirect =  $_POST['redirect'];
-		// print_obj($cart_info); die;
+		$shipping_rate =  $_POST['shipping_rate'];
+		// print_obj($_POST); die;
 		foreach ($cart_info as $id => $cart) {
 			$rowid = $cart['rowid'];
 			$price = $cart['price'];
 			$amount = $price * $cart['qty'];
 			$qty = $cart['qty'];
-			$shipping_rate = $cart['shipping_rate'];
+			// $shipping_rate = $cart['shipping_rate'];
 			$product_details = $this->product_model->product_details_by_id($cart['id']);
 			//echo $product_details[0]->stock_count;exit;
 			if ($qty <= $product_details[0]->stock_count) {
@@ -337,7 +338,8 @@ class Cart extends CI_Controller
 
 		$ord_id = $this->billing_model->insert_order($order);
 
-
+		$cart = $this->cart->contents();
+		print_r($cart);die;
 		$totalval = 0;
 		if ($cart = $this->cart->contents()) :
 			foreach ($cart as $item) :

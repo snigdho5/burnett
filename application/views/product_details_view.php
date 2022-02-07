@@ -171,7 +171,7 @@
                         </div> */ ?>
 
                         <!-- Pincode checker // -snigdho -->
-                        <div class="row">
+                       <div class="row" style="display: none;">
                             <div class="col-md-3">
                                 <label for="pincode">Check Availability</label>
                                 <input type="hidden" class="cod-val" name="cod_val" value="0">
@@ -200,7 +200,7 @@
                                     </select>
                                 </p>
                             </div>
-                        </div>
+                        </div> 
 
                         <!-- Pincode checker ends// -snigdho -->
 

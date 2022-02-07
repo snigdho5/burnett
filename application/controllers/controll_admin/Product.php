@@ -767,7 +767,7 @@ class Product extends CI_Controller
 
   public function bulkuploadsample()
   {
-    $url = base_url() . 'uploads/samples/bulk-upload-sample-file.xlsx';
+    $url = base_url() . 'uploads/samples/new-bulkupload-file4.xlsx';
     redirect($url);
   }
 
@@ -1044,30 +1044,60 @@ class Product extends CI_Controller
           $highestColumn = $sheet->getHighestColumn();
           $totalColumNo = PHPExcel_Cell::columnIndexFromString($highestColumn);
 
-          if ($highestColumn == 'Q' && $totalColumNo == 17) {
+          if ($highestColumn == 'W' && $totalColumNo == 23) {
 
             $startRow = 2;
             for ($row = $startRow; $row <= $getHighestRow; $row++) {
 
               $InsertData = array(
                 'product_type'   => strtolower($sheet->getCellByColumnAndRow(0, $row)->getValue()),
+
                 'product_code'   => 'CODPRO' . time() . rand(0000, 9999),
+
                 'unique_key'   => $this->create_slug($sheet->getCellByColumnAndRow(2, $row)->getValue()),
-                'product_title' => $sheet->getCellByColumnAndRow(2, $row)->getValue(),
-                'product_quantity_info' => $sheet->getCellByColumnAndRow(3, $row)->getValue(),
-                'stock_count'       => $sheet->getCellByColumnAndRow(4, $row)->getValue(),
-                'product_regular_price' => $sheet->getCellByColumnAndRow(5, $row)->getValue(),
-                'product_price'     => $sheet->getCellByColumnAndRow(6, $row)->getValue(),
-                'weight'         => $sheet->getCellByColumnAndRow(7, $row)->getValue(),
-                'info_for_doctor'     => $sheet->getCellByColumnAndRow(8, $row)->getValue(),
-                'product_description'   => $sheet->getCellByColumnAndRow(9, $row)->getValue(),
-                'product_component'   => $sheet->getCellByColumnAndRow(10, $row)->getValue(),
-                'dose'           => $sheet->getCellByColumnAndRow(11, $row)->getValue(),
-                'dose_hindi'       => $sheet->getCellByColumnAndRow(12, $row)->getValue(),
-                'dose_bengali'       => $sheet->getCellByColumnAndRow(13, $row)->getValue(),
-                'meta_title'       => $sheet->getCellByColumnAndRow(14, $row)->getValue(),
-                'meta_keyword'       => $sheet->getCellByColumnAndRow(15, $row)->getValue(),
-                'meta_description'     => $sheet->getCellByColumnAndRow(16, $row)->getValue(),
+
+                'product_title' => ($sheet->getCellByColumnAndRow(2, $row)->getValue() != '') ? $sheet->getCellByColumnAndRow(2, $row)->getValue() : '',
+
+                'product_quantity_info' => ($sheet->getCellByColumnAndRow(3, $row)->getValue() != '') ? $sheet->getCellByColumnAndRow(3, $row)->getValue() : '0',
+
+                'stock_count'       => ($sheet->getCellByColumnAndRow(4, $row)->getValue() != '') ? $sheet->getCellByColumnAndRow(4, $row)->getValue() : '0',
+
+                'product_regular_price' => ($sheet->getCellByColumnAndRow(5, $row)->getValue() != '') ? $sheet->getCellByColumnAndRow(5, $row)->getValue() : '0',
+
+                'product_price'     => ($sheet->getCellByColumnAndRow(6, $row)->getValue() != '') ? $sheet->getCellByColumnAndRow(6, $row)->getValue() : '0',
+
+                'weight'         => ($sheet->getCellByColumnAndRow(7, $row)->getValue() != '') ? $sheet->getCellByColumnAndRow(7, $row)->getValue() : '0',
+
+                'length'         => ($sheet->getCellByColumnAndRow(8, $row)->getValue() != '') ? $sheet->getCellByColumnAndRow(8, $row)->getValue() : '0',
+
+                'breadth'         => ($sheet->getCellByColumnAndRow(9, $row)->getValue() != '') ? $sheet->getCellByColumnAndRow(9, $row)->getValue() : '0',
+
+                'height'         => ($sheet->getCellByColumnAndRow(10, $row)->getValue() != '') ? $sheet->getCellByColumnAndRow(10, $row)->getValue() : '0',
+
+                'info_for_doctor'     => ($sheet->getCellByColumnAndRow(11, $row)->getValue() != '') ? $sheet->getCellByColumnAndRow(11, $row)->getValue() : '',
+
+                'product_description'   => ($sheet->getCellByColumnAndRow(12, $row)->getValue() != '') ? $sheet->getCellByColumnAndRow(12, $row)->getValue() : '',
+
+                'product_component'   => ($sheet->getCellByColumnAndRow(13, $row)->getValue() != '') ? $sheet->getCellByColumnAndRow(13, $row)->getValue() : '',
+
+                'dose'           => ($sheet->getCellByColumnAndRow(14, $row)->getValue() != '') ? $sheet->getCellByColumnAndRow(14, $row)->getValue() : '',
+
+                'dose_hindi'       => ($sheet->getCellByColumnAndRow(15, $row)->getValue() != '') ? $sheet->getCellByColumnAndRow(15, $row)->getValue() : '',
+
+                'dose_bengali'       => ($sheet->getCellByColumnAndRow(16, $row)->getValue() != '') ? $sheet->getCellByColumnAndRow(16, $row)->getValue() : '',
+
+                'meta_title'       => ($sheet->getCellByColumnAndRow(17, $row)->getValue() != '') ? $sheet->getCellByColumnAndRow(17, $row)->getValue() : '',
+
+                'meta_keyword'       => ($sheet->getCellByColumnAndRow(18, $row)->getValue() != '') ? $sheet->getCellByColumnAndRow(18, $row)->getValue() : '',
+
+                'meta_description'     => ($sheet->getCellByColumnAndRow(19, $row)->getValue() != '') ? $sheet->getCellByColumnAndRow(19, $row)->getValue() : '',
+
+                'indication_english_text'     => ($sheet->getCellByColumnAndRow(20, $row)->getValue() != '') ? $sheet->getCellByColumnAndRow(20, $row)->getValue() : '',
+
+                'indication_hindi_text'     => ($sheet->getCellByColumnAndRow(21, $row)->getValue() != '') ? $sheet->getCellByColumnAndRow(21, $row)->getValue() : '',
+                
+                'indication_bengali_text'     => ($sheet->getCellByColumnAndRow(22, $row)->getValue() != '') ? $sheet->getCellByColumnAndRow(22, $row)->getValue() : '',
+
                 'added_date'       => date('Y-m-d H:i:s')
               );
 
@@ -1076,26 +1106,33 @@ class Product extends CI_Controller
                 $this->db->insert('product', $InsertData);
                 $lastInsertId = $this->db->insert_id();
 
-                for ($x = 0; $x <= count($lastInsertId); $x++) {
+                if ($lastInsertId != '') {
+                  // for ($x = 0; $x <= count($lastInsertId); $x++) {
 
                   $categoryName   = $sheet->getCellByColumnAndRow(1, $row)->getValue();
                   $categoryID   = $this->db->like('name', $categoryName)->get('category')->result();
+
+                  $this->db->where('product_id', $lastInsertId);
+                  $this->db->delete('product_category');
 
                   $product_category = array(
                     'product_id'   => $lastInsertId,
                     'category_id'   => $categoryID[0]->cat_id
                   );
+                  // print_obj($product_category);
                   $this->db->insert('product_category', $product_category);
 
-                  if (strtolower($sheet->getCellByColumnAndRow(0, $row)->getValue()) == 'simple') {
+                  if (strtolower($sheet->getCellByColumnAndRow(0, $row)->getValue()) == 'variable') {
                     $product_variable_attribute = array(
                       'product_id'       => $lastInsertId,
                       'product_price'     => $sheet->getCellByColumnAndRow(6, $row)->getValue(),
                       'product_regular_price' => $sheet->getCellByColumnAndRow(5, $row)->getValue(),
                       'weight'         => $sheet->getCellByColumnAndRow(7, $row)->getValue()
                     );
+                    // print_obj($product_variable_attribute);
                     $this->db->insert('product_variable_attribute', $product_variable_attribute);
                   }
+                  // }die;
                 }
               }
             }

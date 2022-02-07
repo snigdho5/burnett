@@ -135,7 +135,6 @@
                   <th>Product</th>
                   <th class="text-center">Price</th>
                   <th>Quantity</th>
-                  <th class="text-center">Shipping</th>
                   <th class="text-center">Total</th>
                   <th> </th>
                 </tr>
@@ -149,7 +148,7 @@
                   foreach ($order_details as $inner_dt) {
 
                     $product_details = $this->common_my_model->common($table_name = 'product', $field = array(), $where = array('product_id' => $inner_dt->product_id), $where_or = array(), $like = array(), $like_or = array(), $order = array(), $start = '', $end = '');
-
+                    $shipping_rate = $inner_dt->shipping_rate;
                 ?>
                     <tr>
                       <td class="col-sm-8 col-md-6">
@@ -165,7 +164,6 @@
                       </td>
                       <td class="col-sm-1 col-md-1 text-center"><i class="fas fa-<?php echo $myorder[0]->order_currency_sign; ?>-sign"></i> <?= $inner_dt->price ?></td>
                       <td class="col-sm-1 col-md-1" style="text-align: center"><?= $inner_dt->quantity ?></td>
-                      <td class="col-sm-1 col-md-1" style="text-align: center"><?php echo $inner_dt->shipping_rate; ?></td>
                       <td class="col-sm-1 col-md-1 text-center"><i class="fas fa-<?php echo $myorder[0]->order_currency_sign; ?>-sign"></i> <?= $inner_dt->price * $inner_dt->quantity ?></td>
 
                     </tr>
@@ -201,6 +199,8 @@
                 <?php } ?>
 
                 <tr style="text-align: center; font-weight: bold;">
+                  <td style="text-align: right" width="110">Shipping Charge :</td>
+                  <td class="col-sm-1 col-md-1" style="text-align: center"><?php echo $shipping_rate; ?></td>
                   <td style="text-align: right" width="110">Total Price :</td>
                   <td width="350"></td>
                   <td style="text-align: left; padding-right: 20px;" width="70"><i style="color:#000;" class="fas fa-<?php echo $myorder[0]->order_currency_sign; ?>-sign"></i> <?php echo number_format($myorder[0]->order_total_value, 2); ?></td>
